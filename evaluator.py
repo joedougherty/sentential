@@ -35,7 +35,7 @@ def resolve_term_negation(L, trace=False):
     return var
 
 
-def eval_cell(expr_as_list, trace=False):
+def eval_cell(expr_as_list):
     """
     Resolve a given expression cell into its truth value.
 
@@ -47,16 +47,14 @@ def eval_cell(expr_as_list, trace=False):
     while not expr_as_list == []:
         next_token = expr_as_list[0]
         if next_token == not_:
-            resolved_vals.append(resolve_term_negation(expr_as_list, trace=trace))
+            resolved_vals.append(resolve_term_negation(expr_as_list))
         else:
             resolved_vals.append(expr_as_list.pop(0))
 
-    if trace:
-        print('Operator: {}'.format(resolved_vals[1]))
-        print('Left operand: {}'.format(resolved_vals[0]))
-        print('Right operand: {}'.format(resolved_vals[2]))
-
-    return resolved_vals[1](resolved_vals[0], resolved_vals[2])
+    if len(resolved_vals) == 1:
+        return resolved_vals[0]
+    else:
+        return resolved_vals[1](resolved_vals[0], resolved_vals[2])
 
 
 def reduce_ast(expr_as_ast, eval_fn=eval_cell, trace=False):
