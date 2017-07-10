@@ -1,0 +1,41 @@
+from collections import namedtuple
+from operator import and_, or_, not_
+from utils import Stack
+
+stack_calculator = namedtuple('stack_calculator', ['operators', 'operands', 'result'])
+
+def populate_stacks(interpreted_expr):
+    operators = Stack()
+    operands = Stack()
+    for item in interpreted_expr:
+        if callable(item):
+            operators.push(item)
+        elif isinstance(item, bool):
+            operands.push(item)
+        else:
+            raise TypeError("I have no idea what to do with: {}!".format(item))
+    return stack_calculator(operators, operands, Stack(size_limit=1))
+
+
+def stack_compute(operators, operands, result): 
+    while not operators.isEmpty():
+        current_op = operators.pop()
+        # This would also be true for *any* unary operator
+        if current_op == not_:
+            if result.isEmpty():
+                result.push(current_op(operands.pop()))
+            else:
+                result.push(current_op(result.pop()))
+        # Binary operator
+        else:
+            if result.isEmpty():
+                result.push(current_op(operands.pop(), operands.pop()))
+            else:
+                result.push(current_op(operands.pop(), result.pop()))
+    return result.pop()
+
+
+def sentential_eval(interpreted_expr):
+    r = populate_stacks(interpreted_expr)
+    return stack_compute(r.operators, r.operands, r.result)
+
