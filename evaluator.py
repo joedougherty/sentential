@@ -2,10 +2,10 @@
 
 from operator import not_
 
-from environment import ENV
 from utils import Stack, list_is_nested, resolve_left_innermost
 
-def resolve_term_negation(L, trace=False):
+
+def resolve_term_negation(L):
     """
     Given a partial expression cell, apply all negation
     operators to the next variable and return that value.
@@ -18,19 +18,13 @@ def resolve_term_negation(L, trace=False):
     Once the var value is found, apply all not_ operators
     to the var and return that value.
     """
-    if trace:
-        print('how I received L: {}'.format(L))
-
     op_stack = Stack()
     while not isinstance(L[0], bool):
         op_stack.push(L.pop(0))
 
-    var = L.pop(0) # The boolean value (resolved val of 'p', 'q', etc.)
+    var = L.pop(0)  # The boolean value (resolved val of 'p', 'q', etc.)
     while not op_stack.isEmpty():
         var = op_stack.pop()(var)
-
-    if trace:
-        print('how I left L: {}'.format(L))
 
     return var
 
@@ -39,7 +33,7 @@ def eval_cell(expr_as_list):
     """
     Resolve a given expression cell into its truth value.
 
-    Ex: 
+    Ex:
         input: [True, and_, not_, False]
         output: True
     """
@@ -57,7 +51,7 @@ def eval_cell(expr_as_list):
         return resolved_vals[1](resolved_vals[0], resolved_vals[2])
 
 
-def reduce_ast(expr_as_ast, eval_fn=eval_cell, trace=False):
+def reduce_ast(expr_as_ast, eval_fn=eval_cell):
     while list_is_nested(expr_as_ast):
         expr_as_ast = resolve_left_innermost(expr_as_ast, eval_fn)
     return eval_fn(expr_as_ast)

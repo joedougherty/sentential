@@ -7,7 +7,11 @@ from utils import Stack
 
 def tokenize(chars):
     ''' Convert a string expression into a list of tokens. '''
-    return chars.replace('~', '~ ').replace('(', ' ( ').replace(')', ' ) ').split()
+    return chars.replace('~', '~ ')  \
+                .replace('(', ' ( ') \
+                .replace(')', ' ) ') \
+                .replace('!', '! ')  \
+                .split()
 
 
 def read_from_tokens_gen(tokens, current_token=None, env=ENV):
@@ -20,12 +24,12 @@ def read_from_tokens_gen(tokens, current_token=None, env=ENV):
         for t in takewhile(lambda x: x != ')', tokens):
             L.append(read_from_tokens_gen(tokens, current_token=t, env=env))
         return L
-    else:   
+    else:
         try:
             return env[token]
         except KeyError:
             raise ValueError("I don't know what to do with {}!".format(token))
-            
+
 
 def balanced_parens(expression):
     stack = Stack()

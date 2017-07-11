@@ -1,4 +1,4 @@
 [ ] module-level docstrings for:
-    [ ] grammar.py (describe dict-based state machine jawn)
+    [X] grammar.py (describe dict-based state machine jawn)
 [ ] what is diff between LEXING and PARSING?
 [ ] how/when to do CNF conversion?

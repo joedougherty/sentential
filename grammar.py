@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
 
 try:
-    from string import lowercase 
+    from string import lowercase
 except:
     from string import ascii_lowercase as lowercase
 
-OPENPAREN = '('
-CLOSEPAREN = ')'
-VAR = lowercase.replace('v','')
-AND = '&'
-OR  = 'v'
-IFTHEN = '->'
-NOT = '~'
-IFF = 'iff'
+from utils import flatten
+
+
+OPENPAREN = ['(']
+CLOSEPAREN = [')']
+VAR = [letter for letter in lowercase.replace('v', '')]
+AND = ['&', 'and']
+OR  = ['v', 'or']
+IFTHEN = ['->']
+NOT = ['~', 'not', '¬']
+IFF = ['iff']
 
 """
 Keys in `grammar_rules` are a pattern to match.
@@ -22,14 +25,14 @@ Grammar rules can be extracted by checking if a token:
     1.) can be matched in any of the keys
     2.) is followed by a token given by the collection of valid patterns
 """
-grammar_rules = {OPENPAREN: (OPENPAREN, VAR, NOT),
-                 CLOSEPAREN: (CLOSEPAREN, AND, OR, IFTHEN, IFF),
-                 VAR: (CLOSEPAREN, AND, OR, IFTHEN, IFF),
-                 AND: (OPENPAREN, VAR, NOT),
-                 OR: (OPENPAREN, VAR, NOT),
-                 IFTHEN: (OPENPAREN, VAR, NOT),
-                 NOT: (OPENPAREN, VAR, NOT),
-                 IFF: (OPENPAREN, VAR, NOT)}
+grammar_rules = {''.join(OPENPAREN): (OPENPAREN, VAR, NOT),
+                 ''.join(CLOSEPAREN): (CLOSEPAREN, AND, OR, IFTHEN, IFF),
+                 ''.join(VAR): (CLOSEPAREN, AND, OR, IFTHEN, IFF),
+                 ''.join(AND): (OPENPAREN, VAR, NOT),
+                 ''.join(OR): (OPENPAREN, VAR, NOT),
+                 ''.join(IFTHEN): (OPENPAREN, VAR, NOT),
+                 ''.join(NOT): (OPENPAREN, VAR, NOT),
+                 ''.join(IFF): (OPENPAREN, VAR, NOT)}
 
 
 def token_is_variable(token):
@@ -41,10 +44,10 @@ def token_rule(token, grammar_rules=grammar_rules, join_tokens=True):
         if token in pattern:
             if join_tokens:
                 # Join all valid tokens into a single string
-                return ''.join(grammar_rules.get(pattern))
+                return ''.join(flatten(grammar_rules.get(pattern)))
             else:
                 # Keep tokens separate for error reporting purposes
-                return ', '.join([t for t in grammar_rules.get(pattern)])
+                return ', '.join([t for t in flatten(grammar_rules.get(pattern))])
     raise SyntaxError('"{}" is not a valid token!'.format(token))
 
 
