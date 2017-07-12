@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from copy import deepcopy
+from itertools import product
 
 from environment import ENV
 from evaluator import reduce_ast
@@ -32,3 +33,23 @@ def derive_truth_value(expression, var_truth_values):
     env = deepcopy(ENV)
     env.update(var_truth_values)
     return reduce_ast(read_from_tokens_gen((t for t in tokens), env=env))
+
+
+def generate_all_possible_truth_vals(set_of_vars):
+    """
+    Given a set of variables, return a list of all possible
+    dicts where:
+        * the key is the variable name
+        * the value is its truth value
+
+    Usage::
+    >>> generate_all_possible_truth_vals(extract_variables('''(p & ~q)''')
+    [{'q': True, 'p': True},
+     {'q': True, 'p': False},
+     {'q': False, 'p': True},
+     {'q': False, 'p': False}]
+    """
+    collection = []
+    for p in product((True, False), repeat=len(set_of_vars)):
+        collection.append(dict(zip(set_of_vars, p)))
+    return collection

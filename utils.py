@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from grammar import token_is_variable
+
 
 class Stack:
     def __init__(self, size_limit=None):
@@ -66,3 +68,7 @@ def deparenthesize(expr):
     if expr[0] == '(' and expr[-1] == ')':
         return expr[1:-1]
     return expr
+
+
+def extract_variables(expr):
+    return set([v for v in expr if token_is_variable(v)])
