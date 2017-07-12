@@ -2,3 +2,4 @@
     [X] grammar.py (describe dict-based state machine jawn)
 [ ] what is diff between LEXING and PARSING?
 [ ] how/when to do CNF conversion?
+[ ] Enforce max of one binary operator per cell

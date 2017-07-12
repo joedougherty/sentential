@@ -25,7 +25,7 @@ def derive_truth_value(expression, var_truth_values):
     >>> derive_truth_value('''(p & ~q)''', {'p': True, 'q': False})
     True
     """
-    balanced_parens(expression)
+    balanced_parens(parenthesize(expression))
     tokens = tokenize(parenthesize(expression))
     expression_is_grammatical(tokens)
     # CNF Conversion goes here eventually ...

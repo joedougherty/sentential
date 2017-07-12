@@ -3,7 +3,8 @@
 from itertools import takewhile
 
 from environment import ENV
-from utils import Stack
+from utils import Stack, deparenthesize
+
 
 def tokenize(chars):
     ''' Convert a string expression into a list of tokens. '''
@@ -42,18 +43,18 @@ def balanced_parens(expression):
                 stack.pop()
             except IndexError:
                 msg = 'Found unmatched )' + '\n'
-                msg += expression + '\n'
+                msg += deparenthesize(expression) + '\n'
                 msg += (' ' * idx) + '^'
                 raise SyntaxError(msg)
         there_are_more_tokens = (idx != len(expression)-1)
         if stack.isEmpty() and there_are_more_tokens:
             msg = 'Matched parens, but there are extra tokens!\n'
-            msg += expression + '\n'
-            msg += (' ' * (idx + 1)) + '^'
+            msg += deparenthesize(expression) + '\n'
+            msg += (' ' * (idx-1)) + '^'
             raise SyntaxError(msg)
     if not stack.isEmpty():
         msg = 'Found unmatched (' + '\n'
-        msg += expression + '\n'
-        msg += (' ' * last_open_paren) + '^'
+        msg += deparenthesize(expression) + '\n'
+        msg += (' ' * (last_open_paren-1)) + '^'
         raise SyntaxError(msg)
     return True

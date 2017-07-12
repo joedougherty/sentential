@@ -66,35 +66,3 @@ def deparenthesize(expr):
     if expr[0] == '(' and expr[-1] == ')':
         return expr[1:-1]
     return expr
-
-
-def flatten(l, acc=None):
-    """
-    Flatten a (potentially) nested list.
-
-    >>> flatten([], acc=None)
-    []
-
-    >>> flatten([1,2,3])
-    [1, 2, 3]
-
-    >>> flatten([1,2,3,[4,5]])
-    [1, 2, 3, 4, 5]
-
-    >>> flatten([1,2,3,[4,5,[6]],[7,8,[9]]])
-    [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-    >>> flatten([[[1,2,3]]])
-    [1, 2, 3]
-
-    >>> flatten([[[1,2,3], 4]])
-    [1, 2, 3, 4]
-    """
-    if acc is None:
-        acc = []
-    for i in l:
-        if isinstance(i, list):
-            flatten(i, acc=acc)
-        else:
-            acc.append(i)
-    return acc
