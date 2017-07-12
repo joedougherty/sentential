@@ -29,7 +29,7 @@ def read_from_tokens_gen(tokens, current_token=None, env=ENV):
         try:
             return env[token]
         except KeyError:
-            raise ValueError("I don't know what to do with {}!".format(token))
+            raise ValueError("{} is not defined the environment.".format(token))
 
 
 def balanced_parens(expression):
