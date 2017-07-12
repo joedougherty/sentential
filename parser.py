@@ -12,6 +12,7 @@ def tokenize(chars):
                 .replace('(', ' ( ') \
                 .replace(')', ' ) ') \
                 .replace('!', '! ')  \
+                .replace('¬', '¬ ')  \
                 .split()
 
 
