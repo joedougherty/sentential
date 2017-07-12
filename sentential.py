@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from collections import OrderedDict
 from copy import deepcopy
 from itertools import product
 
@@ -50,6 +51,6 @@ def generate_all_possible_truth_vals(expr):
      {'q': False, 'p': False}]
     """
     collection = []
-    for p in product((True, False), repeat=len(extract_variables(expr))):
-        collection.append(dict(zip(extract_variables(expr), p)))
+    for p in product((True, False), repeat=len(extract_variables(tokenize(expr)))):
+        collection.append(OrderedDict(zip(extract_variables(tokenize(expr)), p)))
     return collection

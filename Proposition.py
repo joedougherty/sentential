@@ -7,6 +7,24 @@ from sentential import derive_truth_value, generate_all_possible_truth_vals
 
 
 class Proposition:
+    """
+    Evaluate a proposition in sentential logic.
+
+    Usage::
+    >>> lnc = Proposition('''¬(p & ¬p)''')
+    <Proposition.Proposition at 0x7f8490845978>
+
+    >>> lnc.truth_table()
+    [OrderedDict([('p', True), ('expr_truth_value', True)]),
+     OrderedDict([('p', False), ('expr_truth_value', True)])]
+
+    >>> lnc.is_theorem()
+    True
+
+    >>> lnc.eval_expr_with_custom_var_vals({'p': False})
+    True
+
+    """
     def __init__(self, expr):
         balanced_parens(parenthesize(expr))
         expression_is_grammatical(tokenize(parenthesize(expr)))
@@ -32,3 +50,6 @@ class Proposition:
             if tv_dict['expr_truth_value'] == False:
                 return False
         return True
+
+    def eval_expr_with_custom_var_vals(self, truth_values_as_dict):
+        return derive_truth_value(self.expr, truth_values_as_dict)

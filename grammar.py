@@ -15,7 +15,7 @@ VAR = [letter for letter in lowercase.replace('v', '')]
 AND = ['&', 'and']
 OR  = ['v', 'or']
 IFTHEN = ['->']
-NOT = ['~', 'not', '¬']
+NOT = ['!', '~', 'not', '¬']
 IFF = ['iff']
 
 grammar_rules = []
