@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
+from prettytable import PrettyTable
+
 from grammar import expression_is_grammatical
 from parser import tokenize, balanced_parens
-from utils import parenthesize
+from utils import parenthesize, extract_variables
 from sentential import derive_truth_value, generate_all_possible_truth_vals
 
 
@@ -29,6 +31,7 @@ class Proposition:
         balanced_parens(parenthesize(expr))
         expression_is_grammatical(tokenize(parenthesize(expr)))
         self.expr = expr
+        self.expr_vars = extract_variables(tokenize(expr))
         self._truth_table = None
 
     def truth_table(self):
@@ -38,6 +41,13 @@ class Proposition:
         if not self._truth_table:
             self._truth_table = self._compute_truth_table()
         return self._truth_table
+
+    def pretty_truth_table(self):
+        t = PrettyTable(self.expr_vars + [self.expr])
+        t.align = 'l'
+        for row in self.truth_table():
+            t.add_row([row.get(x) for x in self.expr_vars] + [row.get('expr_truth_value')])
+        print(t)
 
     def _compute_truth_table(self):
         var_truth_vals = generate_all_possible_truth_vals(self.expr)
