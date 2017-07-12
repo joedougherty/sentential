@@ -53,7 +53,7 @@ def expression_is_grammatical(expr, trace=False):
             print('----------------')
 
         if next_token not in token_rule(token):
-            msg = 'Statement is not grammatica!\n'
+            msg = 'Statement is not grammatical!\n'
             msg += '{} was followed by: {}\n'.format(token, next_token)
             msg += '{} must be followed by one of: {}\n'.format(token, ', '.join(token_rule(token)))
             raise SyntaxError(msg)
