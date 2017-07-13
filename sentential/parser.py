@@ -2,8 +2,8 @@
 
 from itertools import takewhile
 
-from environment import ENV
-from utils import Stack, deparenthesize
+from .environment import ENV
+from .utils import Stack, deparenthesize
 
 
 def tokenize(chars):

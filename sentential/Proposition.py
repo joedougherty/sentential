@@ -2,10 +2,10 @@
 
 from prettytable import PrettyTable
 
-from grammar import expression_is_grammatical
-from parser import tokenize, balanced_parens
-from utils import parenthesize, extract_variables
-from sentential import derive_truth_value, generate_all_possible_truth_vals
+from .grammar import expression_is_grammatical
+from .parser import tokenize, balanced_parens
+from .utils import parenthesize, extract_variables
+from .sentential import derive_truth_value, generate_all_possible_truth_vals
 
 
 class Proposition:

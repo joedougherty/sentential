@@ -2,7 +2,7 @@
 
 from operator import not_
 
-from utils import Stack, list_is_nested, resolve_left_innermost
+from .utils import Stack, list_is_nested, resolve_left_innermost
 
 
 def resolve_term_negation(L):

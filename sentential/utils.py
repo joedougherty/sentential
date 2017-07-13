@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from grammar import token_is_variable
+from .grammar import token_is_variable
 
 
 class Stack:
