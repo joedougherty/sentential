@@ -2,11 +2,20 @@
 
 import operator
 
+
+def conditional(p, q):
+    return (not p) or q
+
+
+def biconditional(p, q):
+    return ((p or (not q)) and ((not p) or q))
+
+
 ENV =  {'and': operator.and_,
         'or' : operator.or_,
         'not': operator.not_,
-        '->' : lambda p, q: (not p) or q,
-        'iff': lambda p, q: ((p or (not q)) and ((not p) or q))}
+        '->' : conditional,
+        'iff': biconditional}
 
 # Some delightful little aliases
 ENV['&'] = ENV['and']
