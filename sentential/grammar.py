@@ -16,7 +16,7 @@ AND = ['&', 'and']
 OR  = ['v', 'or']
 IFTHEN = ['->']
 NOT = ['!', '~', 'not', '¬']
-IFF = ['iff']
+IFF = ['iff', '<->', '=']
 
 grammar_rules = []
 grammar_rules.append(grammar_rule(OPENPAREN, OPENPAREN + VAR + NOT))

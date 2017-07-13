@@ -1,1 +1,1 @@
-from Proposition import Proposition
+from .Proposition import Proposition

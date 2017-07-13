@@ -4,11 +4,11 @@ from collections import OrderedDict
 from copy import deepcopy
 from itertools import product
 
-from environment import ENV
-from evaluator import reduce_ast
-from grammar import expression_is_grammatical
-from parser import tokenize, balanced_parens, read_from_tokens_gen
-from utils import parenthesize, extract_variables
+from .environment import ENV
+from .evaluator import reduce_ast
+from .grammar import expression_is_grammatical
+from .parser import tokenize, balanced_parens, read_from_tokens_gen
+from .utils import parenthesize, extract_variables
 
 
 def derive_truth_value(expression, var_truth_values):
