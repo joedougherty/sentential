@@ -20,12 +20,16 @@ class Proposition:
     [OrderedDict([('p', True), ('expr_truth_value', True)]),
      OrderedDict([('p', False), ('expr_truth_value', True)])]
 
+    >>> lnc.pretty_truth_table()
+    +-------+-----------+
+    | p     | ¬(p & ¬p) |
+    +-------+-----------+
+    | True  | True      |
+    | False | True      |
+    +-------+-----------+
+
     >>> lnc.is_theorem()
     True
-
-    >>> lnc.eval_expr_with_custom_var_vals({'p': False})
-    True
-
     """
     def __init__(self, expr):
         balanced_parens(parenthesize(expr))
@@ -36,7 +40,7 @@ class Proposition:
 
     def truth_table(self):
         """
-        This method caches a computed truth table in self.truth_table.
+        This method caches a computed truth table in self._truth_table.
         """
         if not self._truth_table:
             self._truth_table = self._compute_truth_table()
