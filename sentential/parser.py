@@ -16,7 +16,25 @@ def tokenize(chars):
                 .split()
 
 
-def read_from_tokens_gen(tokens, current_token=None, env=ENV):
+def extract_from_env(env, token):
+    try:
+        return env[token]
+    except KeyError:
+        raise ValueError("{} is not defined the environment.".format(token))
+
+
+def read_from_tokens_gen(tokens, current_token=None, env=ENV, evaluate_tokens=True):
+    """
+    Implements a simple recursive descent parser.
+
+    Accepts a steam of tokens and returns an AST
+    (modeled as a list of lists of expressions).
+
+    This is (roughly) a generator-based implementation of
+    the `read_from_tokens` function found in Peter Norvig's
+    (How to Write a (Lisp) Interpreter (in Python))
+    [https://norvig.com/lispy.html]
+    """
     if current_token:
         token = current_token
     else:
@@ -27,10 +45,10 @@ def read_from_tokens_gen(tokens, current_token=None, env=ENV):
             L.append(read_from_tokens_gen(tokens, current_token=t, env=env))
         return L
     else:
-        try:
-            return env[token]
-        except KeyError:
-            raise ValueError("{} is not defined the environment.".format(token))
+        if evaluate_tokens:
+            return extract_from_env(env, token)
+        else:
+            return token
 
 
 def balanced_parens(expression):
