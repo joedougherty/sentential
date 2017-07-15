@@ -5,10 +5,10 @@ from copy import deepcopy
 from itertools import product
 
 from .environment import ENV
-from .evaluator import reduce_ast
+from .evaluator import eval_cell
 from .grammar import expression_is_grammatical
 from .parser import tokenize, balanced_parens, read_from_tokens_gen
-from .utils import parenthesize, extract_variables
+from .utils import parenthesize, extract_variables, reduce_ast
 
 
 def derive_truth_value(expression, var_truth_values):
@@ -33,7 +33,7 @@ def derive_truth_value(expression, var_truth_values):
     # CNF Conversion goes here eventually ...
     env = deepcopy(ENV)
     env.update(var_truth_values)
-    return reduce_ast(read_from_tokens_gen((t for t in tokens), env=env))
+    return reduce_ast(read_from_tokens_gen((t for t in tokens), env=env), eval_cell)
 
 
 def generate_all_possible_truth_vals(expr):

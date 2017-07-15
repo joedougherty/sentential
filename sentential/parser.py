@@ -42,7 +42,7 @@ def read_from_tokens_gen(tokens, current_token=None, env=ENV, evaluate_tokens=Tr
     if token == '(':
         L = []
         for t in takewhile(lambda x: x != ')', tokens):
-            L.append(read_from_tokens_gen(tokens, current_token=t, env=env))
+            L.append(read_from_tokens_gen(tokens, current_token=t, env=env, evaluate_tokens=evaluate_tokens))
         return L
     else:
         if evaluate_tokens:

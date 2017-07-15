@@ -15,22 +15,27 @@ VAR = [letter for letter in lowercase.replace('v', '')]
 AND = ['&', 'and']
 OR  = ['v', 'or']
 IFTHEN = ['->']
-NOT = ['!', '~', 'not', '¬']
+NEGATION = ['!', '~', 'not', '¬']
 IFF = ['iff', '<->', '=']
+BINARY_OPS = AND + OR + IFTHEN + IFF
 
 grammar_rules = []
-grammar_rules.append(grammar_rule(OPENPAREN, OPENPAREN + VAR + NOT))
-grammar_rules.append(grammar_rule(CLOSEPAREN, CLOSEPAREN + AND + OR + IFTHEN + IFF))
-grammar_rules.append(grammar_rule(VAR, CLOSEPAREN + AND + OR + IFTHEN + IFF))
-grammar_rules.append(grammar_rule(AND, OPENPAREN + VAR + NOT))
-grammar_rules.append(grammar_rule(OR, OPENPAREN + VAR + NOT))
-grammar_rules.append(grammar_rule(IFTHEN, OPENPAREN + VAR + NOT))
-grammar_rules.append(grammar_rule(NOT, OPENPAREN + VAR + NOT))
-grammar_rules.append(grammar_rule(IFF, OPENPAREN + VAR + NOT))
+grammar_rules.append(grammar_rule(OPENPAREN, OPENPAREN + VAR + NEGATION))
+grammar_rules.append(grammar_rule(CLOSEPAREN, CLOSEPAREN + BINARY_OPS))
+grammar_rules.append(grammar_rule(VAR, CLOSEPAREN + BINARY_OPS))
+grammar_rules.append(grammar_rule(AND, OPENPAREN + VAR + NEGATION))
+grammar_rules.append(grammar_rule(OR, OPENPAREN + VAR + NEGATION))
+grammar_rules.append(grammar_rule(IFTHEN, OPENPAREN + VAR + NEGATION))
+grammar_rules.append(grammar_rule(NEGATION, OPENPAREN + VAR + NEGATION))
+grammar_rules.append(grammar_rule(IFF, OPENPAREN + VAR + NEGATION))
 
 
 def token_is_variable(token):
     return token in VAR
+
+
+def token_is_binary_op(token):
+    return token in BINARY_OPS
 
 
 def token_rule(token, grammar_rules=grammar_rules):

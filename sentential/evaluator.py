@@ -2,7 +2,7 @@
 
 from operator import not_
 
-from .utils import Stack, list_is_nested, resolve_left_innermost
+from .utils import Stack
 
 
 def resolve_term_negation(L):
@@ -49,9 +49,3 @@ def eval_cell(expr_as_list):
         return resolved_vals[0]
     else:
         return resolved_vals[1](resolved_vals[0], resolved_vals[2])
-
-
-def reduce_ast(expr_as_ast, eval_fn=eval_cell):
-    while list_is_nested(expr_as_ast):
-        expr_as_ast = resolve_left_innermost(expr_as_ast, eval_fn)
-    return eval_fn(expr_as_ast)

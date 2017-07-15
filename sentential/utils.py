@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from copy import copy, deepcopy
+
 from .grammar import token_is_variable
 
 
@@ -35,7 +37,7 @@ def list_is_nested(L):
     return False
 
 
-def resolve_left_innermost(L, resolve_fn, inner=None):
+def resolve_left_innermost(L, resolve_fn, inner=None, remove_cell=False):
     """
     Given a nested list L:
         * Find the left-innermost nested list
@@ -52,12 +54,38 @@ def resolve_left_innermost(L, resolve_fn, inner=None):
 
         Replace the list with the resolved value and pass the
         modified containing list back to the caller.
+
+        If remove_cell=True, return the found left innermost
+        list and remove it from the original list of lists.
         """
         if isinstance(item, list) and not list_is_nested(item):
-            inner[idx] = resolve_fn(item)
-            return L
+            if remove_cell:
+                return_cell = copy(inner[idx])
+                del inner[idx]
+                return return_cell
+            else:
+                inner[idx] = resolve_fn(item)
+                return L
         if isinstance(item, list):
-            return resolve_left_innermost(L, resolve_fn, inner=item)
+            return resolve_left_innermost(L, resolve_fn, inner=item, remove_cell=remove_cell)
+
+
+def reduce_ast(expr_as_ast, eval_fn):
+    while list_is_nested(expr_as_ast):
+        expr_as_ast = resolve_left_innermost(expr_as_ast, eval_fn)
+    return eval_fn(expr_as_ast)
+
+
+def ast_to_stack(expr_as_ast):
+    """
+    Create of stack of all the sub-expressions that the AST
+    is composed of.
+    """
+    ast_copy = deepcopy(expr_as_ast)
+    expression_stack = Stack()
+    while list_is_nested(ast_copy):
+        expression_stack.push(resolve_left_innermost(ast_copy, None, remove_cell=True))
+    return expression_stack
 
 
 def parenthesize(expr):
