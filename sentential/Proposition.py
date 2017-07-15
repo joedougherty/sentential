@@ -3,9 +3,10 @@
 from prettytable import PrettyTable
 
 from .grammar import expression_is_grammatical
-from .parser import tokenize, balanced_parens
+from .parser import tokenize, balanced_parens, read_from_tokens_gen
 from .utils import parenthesize, extract_variables
 from .sentential import derive_truth_value, generate_all_possible_truth_vals
+from .subexpression import ast_is_sane
 
 
 class Proposition:
@@ -33,7 +34,9 @@ class Proposition:
     """
     def __init__(self, expr):
         balanced_parens(parenthesize(expr))
-        expression_is_grammatical(tokenize(parenthesize(expr)))
+        tokens = tokenize(parenthesize(expr))
+        expression_is_grammatical(tokens)
+        ast_is_sane(read_from_tokens_gen((t for t in tokens), evaluate_tokens=False))
         self.expr = expr
         self.expr_vars = extract_variables(tokenize(expr))
         self._truth_table = None

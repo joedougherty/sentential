@@ -50,6 +50,10 @@ def sub_expr_is_sane(sub_expr):
         * one binary operator (and, or, conditional, biconditional)
     """
     def cell_to_str(expr_as_list):
+        """
+        Convert a parsed subexpression back to its string
+        form for error reporting purposes.
+        """
         str_rep = "({})".format(' '.join(expr_as_list))
         for symbol in NEGATION:
             str_rep = str_rep.replace(symbol + ' ', symbol)

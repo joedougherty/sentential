@@ -8,6 +8,7 @@ from .environment import ENV
 from .evaluator import eval_cell
 from .grammar import expression_is_grammatical
 from .parser import tokenize, balanced_parens, read_from_tokens_gen
+from .subexpression import ast_is_sane
 from .utils import parenthesize, extract_variables, reduce_ast
 
 
@@ -30,6 +31,7 @@ def derive_truth_value(expression, var_truth_values):
     balanced_parens(parenthesize(expression))
     tokens = tokenize(parenthesize(expression))
     expression_is_grammatical(tokens)
+    ast_is_sane(read_from_tokens_gen(t for t in tokens), evaluate_tokens=False)
     # CNF Conversion goes here eventually ...
     env = deepcopy(ENV)
     env.update(var_truth_values)
