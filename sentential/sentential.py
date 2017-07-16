@@ -31,7 +31,7 @@ def derive_truth_value(expression, var_truth_values):
     balanced_parens(parenthesize(expression))
     tokens = tokenize(parenthesize(expression))
     expression_is_grammatical(tokens)
-    ast_is_sane(read_from_tokens_gen(t for t in tokens), evaluate_tokens=False)
+    ast_is_sane(read_from_tokens_gen((t for t in tokens), evaluate_tokens=False))
     # CNF Conversion goes here eventually ...
     env = deepcopy(ENV)
     env.update(var_truth_values)
