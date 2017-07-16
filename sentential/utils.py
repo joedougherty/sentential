@@ -61,7 +61,7 @@ def resolve_left_innermost(L, resolve_fn, inner=None, remove_cell=False):
         if isinstance(item, list) and not list_is_nested(item):
             if remove_cell:
                 return_cell = copy(inner[idx])
-                del inner[idx]
+                inner[idx] = None
                 return return_cell
             else:
                 inner[idx] = resolve_fn(item)

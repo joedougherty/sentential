@@ -38,6 +38,8 @@ def classify_sub_expr_terms(sub_expr):
             terms.append([sub_expr.pop(0)])
         elif token_is_binary_op(sub_expr[0]):
             binary_ops.append(sub_expr.pop(0))
+        elif sub_expr[0] is None:
+            sub_expr.pop(0)
         else:
             raise ValueError("I don't know what to do with {}!".format(sub_expr[0]))
     return (terms, binary_ops, orig_sub_expr)
@@ -54,6 +56,10 @@ def sub_expr_is_sane(sub_expr):
         Convert a parsed subexpression back to its string
         form for error reporting purposes.
         """
+        # Replace None with '[...]'
+        for idx, item in enumerate(expr_as_list):
+            if item is None:
+                expr_as_list[idx] = '[...]'
         str_rep = "({})".format(' '.join(expr_as_list))
         for symbol in NEGATION:
             str_rep = str_rep.replace(symbol + ' ', symbol)
