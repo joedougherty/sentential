@@ -1,0 +1,15 @@
+setup.py
+sentential/Proposition.py
+sentential/__init__.py
+sentential/environment.py
+sentential/evaluator.py
+sentential/grammar.py
+sentential/parser.py
+sentential/sentential.py
+sentential/subexpression.py
+sentential/utils.py
+sentential.egg-info/PKG-INFO
+sentential.egg-info/SOURCES.txt
+sentential.egg-info/dependency_links.txt
+sentential.egg-info/requires.txt
+sentential.egg-info/top_level.txt
