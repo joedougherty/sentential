@@ -50,7 +50,10 @@ class Proposition:
 
         Example:
         =======
-        p.truth_table(cond=lambda row: row['p'] == True)
+        >>> p.truth_table(cond=lambda row: row['p'] == True)
+
+        You can determine the names of all the possible dict keys with:
+        >>> p.truth_table()[0].keys()
         """
         if not self._truth_table:
             self._truth_table = self._compute_truth_table()
