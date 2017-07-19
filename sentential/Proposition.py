@@ -41,18 +41,38 @@ class Proposition:
         self.expr_vars = extract_variables(tokenize(expr))
         self._truth_table = None
 
-    def truth_table(self):
+    def truth_table(self, cond=None):
         """
         This method caches a computed truth table in self._truth_table.
+
+        :cond: [lambda]
+        An optional lambda to filter the resulting truth table.
+
+        Example:
+        =======
+        p.truth_table(cond=lambda row: row['p'] == True)
         """
         if not self._truth_table:
             self._truth_table = self._compute_truth_table()
+
+        if cond:
+            return list(filter(cond, self._truth_table))
         return self._truth_table
 
-    def pretty_truth_table(self):
+    def pretty_truth_table(self, cond=None):
+        """
+        Pretty prints a truth table.
+
+        :cond: [lambda]
+        An optional lambda to filter the resulting truth table.
+
+        Example:
+        =======
+        p.truth_table(cond=lambda row: row['p'] == True)
+        """
         t = PrettyTable(self.expr_vars + [self.expr])
         t.align = 'l'
-        for row in self.truth_table():
+        for row in self.truth_table(cond=cond):
             t.add_row([row.get(x) for x in self.expr_vars] + [row.get('expr_truth_value')])
         print(t)
 
