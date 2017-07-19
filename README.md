@@ -35,7 +35,6 @@ Very much a work in progress.
 	>>> law_of_excluded_middle = Proposition('''(p v ¬p)''')
 
 	>>> the_nature_of_bivalence = Proposition('{} <-> {}'.format(law_of_non_contradiction.expr, law_of_excluded_middle.expr))
-	the_nature_of_bivalence.pretty_truth_table()
 
 	>>> the_nature_of_bivalence.pretty_truth_table()
 	+-------+------------------------+
