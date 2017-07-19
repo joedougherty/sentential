@@ -2,3 +2,6 @@
 __pycache__/
 .ropeproject/
 *scratch*
+build/
+dist/
+sentential.egg-info/
