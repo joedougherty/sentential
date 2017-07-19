@@ -8,14 +8,12 @@ Very much a work in progress.
     Evaluate a proposition in sentential logic.
 
     Usage::
-    >>> lnc = Proposition('''¬(p & ¬p)''')
-    <Proposition.Proposition at 0x7f8490845978>
 
-    >>> lnc.truth_table()
-    [OrderedDict([('p', True), ('expr_truth_value', True)]),
-     OrderedDict([('p', False), ('expr_truth_value', True)])]
+	>>> from sentential import Proposition
 
-    >>> lnc.pretty_truth_table()
+    >>> law_of_non_contradiction = Proposition('''¬(p & ¬p)''')
+
+    >>> law_of_non_contradiction.pretty_truth_table()
     +-------+-----------+
     | p     | ¬(p & ¬p) |
     +-------+-----------+
@@ -23,5 +21,27 @@ Very much a work in progress.
     | False | True      |
     +-------+-----------+
 
-    >>> lnc.is_theorem()
+	# Inspect the internal representation
+    >>> law_of_non_contradiction.truth_table()
+    [OrderedDict([('p', True), ('expr_truth_value', True)]),
+     OrderedDict([('p', False), ('expr_truth_value', True)])]
+
+    >>> law_of_non_contradiction.is_theorem()
     True
+
+	# Propositions can be combined with standard string operators
+	>>> law_of_non_contradiction = Proposition('''¬(p & ¬p)''')
+
+	>>> law_of_excluded_middle = Proposition('''(p v ¬p)''')
+
+	>>> the_nature_of_bivalence = Proposition('{} <-> {}'.format(law_of_non_contradiction.expr, law_of_excluded_middle.expr))
+	the_nature_of_bivalence.pretty_truth_table()
+
+	>>> the_nature_of_bivalence.pretty_truth_table()
+	+-------+------------------------+
+	| p     | ¬(p & ¬p) <-> (p v ¬p) |
+	+-------+------------------------+
+	| True  | True                   |
+	| False | True                   |
+	+-------+------------------------+
+
