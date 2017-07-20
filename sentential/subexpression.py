@@ -58,25 +58,27 @@ def classify_sub_expr_terms(sub_expr):
     return (terms, binary_ops, orig_sub_expr)
 
 
+def cell_to_str(expr_as_list):
+    """
+    Convert a parsed subexpression back to its string
+    form for error reporting purposes.
+    """
+    # Replace None with '[...]'
+    for idx, item in enumerate(expr_as_list):
+        if item is None:
+            expr_as_list[idx] = '[...]'
+    str_rep = "({})".format(' '.join(expr_as_list))
+    for symbol in NEGATION:
+        str_rep = str_rep.replace(symbol + ' ', symbol)
+    return str_rep
+
+
 def sub_expr_is_sane(sub_expr):
     """
     Verify that the given sub-expression contains no more than:
         * two terms (variables, possibly preceded by multiple negations)
         * one binary operator (and, or, conditional, biconditional)
     """
-    def cell_to_str(expr_as_list):
-        """
-        Convert a parsed subexpression back to its string
-        form for error reporting purposes.
-        """
-        # Replace None with '[...]'
-        for idx, item in enumerate(expr_as_list):
-            if item is None:
-                expr_as_list[idx] = '[...]'
-        str_rep = "({})".format(' '.join(expr_as_list))
-        for symbol in NEGATION:
-            str_rep = str_rep.replace(symbol + ' ', symbol)
-        return str_rep
 
     terms, binary_ops, orig_sub_expr = classify_sub_expr_terms(sub_expr)
     if len(terms) > 2 or len(binary_ops) > 1:

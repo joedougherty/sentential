@@ -62,7 +62,7 @@ def resolve_left_innermost(L, resolve_fn, inner=None):
             return resolve_left_innermost(L, resolve_fn, inner=item)
 
 
-def pop_left_innermost(L, inner=None, remove_cell=False):
+def pop_left_innermost(L, inner=None):
     """
     Given a nested list L:
         * Find the left-innermost nested list
