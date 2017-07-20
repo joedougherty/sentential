@@ -5,6 +5,8 @@ from sentential.utils import (list_is_nested, resolve_left_innermost,
 
 """ Tests pertaining to sentential.utils """
 
+""" Test `list_is_nested` """
+
 def test_flat_empty_list():
     assert list_is_nested([]) == False
 
@@ -17,6 +19,8 @@ def test_simple_nested_list():
     assert list_is_nested([True, or_, [True, and_, False]]) == True
 
 
+""" Test `pop_left_innermost` """
+
 def test_flat_pop_left_innermost():
     # If the given AST is a flat list, return the list
     test_ast = [True, and_, False]
@@ -27,7 +31,7 @@ def test_nested_pop_left_innermost_return_value():
     """ Test that the correct sub-list is returned """
     test_ast = [True, and_, False, [True, or_, False], [1, 2, 3]]
     assert pop_left_innermost(test_ast) == [True, or_, False]
-    
+
 
 def test_nested_pop_left_innermost_list_is_updated():
     """
@@ -38,6 +42,8 @@ def test_nested_pop_left_innermost_list_is_updated():
     pop_left_innermost(test_ast)
     assert test_ast == [True, and_, False, [1, 2, 3]]
 
+
+""" Test `ast_to_stack` """
 
 def test_empty_ast_to_stack():
     stack_representation = ast_to_stack([])

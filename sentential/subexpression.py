@@ -5,6 +5,19 @@ from copy import deepcopy
 from .utils import ast_to_stack
 from .grammar import NEGATION, token_is_binary_op, token_is_variable
 
+"""
+A handful of tools to verify that the AST (and thus the sub-expressions
+that it is composed of) meet some basic criteria. Namely:
+    * Each sub-expression may contain at _most_:
+        * two terms (preceded by zero or more negation operators)
+        * one binary operator
+
+The functions contained in this module are designed to operate on an
+AST *before* its constituent values are resolved.
+
+That is, these operate on structures like:
+    test_ast = ['~', 'p', '&', ['q', 'or', 'r']]
+"""
 
 def negated_term_collector(sub_expr):
     acc = []
@@ -82,6 +95,8 @@ def ast_is_sane(ast):
     and one binary operator.
     """
     stack_of_expressions = ast_to_stack(ast)
+    assert len(stack_of_expressions.content) > 0
+
     while not stack_of_expressions.isEmpty():
         sub_expr_is_sane(stack_of_expressions.pop())
     return True
