@@ -37,7 +37,7 @@ def list_is_nested(L):
     return False
 
 
-def resolve_left_innermost(L, resolve_fn, inner=None, remove_cell=False):
+def resolve_left_innermost(L, resolve_fn, inner=None):
     """
     Given a nested list L:
         * Find the left-innermost nested list
@@ -54,20 +54,40 @@ def resolve_left_innermost(L, resolve_fn, inner=None, remove_cell=False):
 
         Replace the list with the resolved value and pass the
         modified containing list back to the caller.
-
-        If remove_cell=True, return the found left innermost
-        list and remove it from the original list of lists.
         """
         if isinstance(item, list) and not list_is_nested(item):
-            if remove_cell:
-                return_cell = copy(inner[idx])
-                inner[idx] = None
-                return return_cell
-            else:
-                inner[idx] = resolve_fn(item)
-                return L
+            inner[idx] = resolve_fn(item)
+            return L
         if isinstance(item, list):
-            return resolve_left_innermost(L, resolve_fn, inner=item, remove_cell=remove_cell)
+            return resolve_left_innermost(L, resolve_fn, inner=item)
+
+
+def pop_left_innermost(L, inner=None, remove_cell=False):
+    """
+    Given a nested list L:
+        * Find the left-innermost nested list
+        * Remove it from L
+        * Return the found list
+    """
+    if inner is None:
+        inner = L
+
+    if not list_is_nested(L):
+        return_cell = []
+        while L != []:
+            return_cell.append(L.pop(0))
+        return return_cell
+
+    for idx, item in enumerate(inner):
+        """
+        If we found a flat list, we know we've bottomed out.
+        """
+        if isinstance(item, list) and not list_is_nested(item):
+            return_cell = copy(inner[idx])
+            del inner[idx]
+            return return_cell
+        if isinstance(item, list):
+            return resolve_left_innermost(L, inner=item)
 
 
 def reduce_ast(expr_as_ast, eval_fn):
@@ -83,8 +103,8 @@ def ast_to_stack(expr_as_ast):
     """
     ast_copy = deepcopy(expr_as_ast)
     expression_stack = Stack()
-    while list_is_nested(ast_copy):
-        expression_stack.push(resolve_left_innermost(ast_copy, None, remove_cell=True))
+    while ast_copy != []:
+        expression_stack.push(pop_left_innermost(ast_copy))
     return expression_stack
 
 
