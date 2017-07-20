@@ -97,7 +97,7 @@ def ast_is_sane(ast):
     and one binary operator.
     """
     stack_of_expressions = ast_to_stack(ast)
-    assert len(stack_of_expressions.content) > 0
+    assert len(stack_of_expressions.contents) > 0
 
     while not stack_of_expressions.isEmpty():
         sub_expr_is_sane(stack_of_expressions.pop())
