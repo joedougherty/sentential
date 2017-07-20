@@ -19,21 +19,38 @@ def test_simple_nested_list():
 
 def test_flat_pop_left_innermost():
     # If the given AST is a flat list, return the list
-    mock_ast = [True, and_, False]
-    assert pop_left_innermost(mock_ast) == [True, and_, False]
+    test_ast = [True, and_, False]
+    assert pop_left_innermost(test_ast) == [True, and_, False]
 
 
 def test_nested_pop_left_innermost_return_value():
     """ Test that the correct sub-list is returned """
-    mock_ast = [True, and_, False, [True, or_, False], [1, 2, 3]]
-    assert pop_left_innermost(mock_ast) == [True, or_, False]
+    test_ast = [True, and_, False, [True, or_, False], [1, 2, 3]]
+    assert pop_left_innermost(test_ast) == [True, or_, False]
     
 
 def test_nested_pop_left_innermost_list_is_updated():
     """
-    Test that the list is altered appropriately
-    The returned sub-list should no longer be present in the original list 
+    Test that the list is altered appropriately.
+    The returned sub-list should no longer be present in the original list.
     """
-    mock_ast = [True, and_, False, [True, or_, False], [1, 2, 3]]
-    pop_left_innermost(mock_ast)
-    assert mock_ast == [True, and_, False, [1, 2, 3]]
+    test_ast = [True, and_, False, [True, or_, False], [1, 2, 3]]
+    pop_left_innermost(test_ast)
+    assert test_ast == [True, and_, False, [1, 2, 3]]
+
+
+def test_empty_ast_to_stack():
+    stack_representation = ast_to_stack([])
+    assert len(stack_representation.contents) == 0
+
+
+def test_flat_ast_to_stack():
+    test_ast = [True, and_, False]
+    stack_representation = ast_to_stack(test_ast)
+    assert len(stack_representation.contents) == 1
+
+
+def test_nested_ast_to_stack():
+    test_ast = [True, and_, False, [True, or_, False], [1, 2, 3]]
+    stack_representation = ast_to_stack(test_ast)
+    assert len(stack_representation.contents) == 3
