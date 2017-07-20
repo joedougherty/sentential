@@ -87,7 +87,7 @@ def pop_left_innermost(L, inner=None):
             del inner[idx]
             return return_cell
         if isinstance(item, list):
-            return resolve_left_innermost(L, inner=item)
+            return pop_left_innermost(L, inner=item)
 
 
 def reduce_ast(expr_as_ast, eval_fn):
