@@ -93,3 +93,7 @@ class Proposition:
 
     def eval_expr_with_custom_var_vals(self, truth_values_as_dict):
         return derive_truth_value(self.expr, truth_values_as_dict)
+
+    def __repr__(self):
+        """ Return a parenthesized version of the initial expression. """
+        return parenthesize(self.expr)
