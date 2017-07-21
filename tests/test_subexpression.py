@@ -62,6 +62,25 @@ def test_classify_sub_expr_terms_zero_terms_two_binary_ops():
     assert orig_sub_expr == ['and', 'v']
 
 
+""" Test `sub_expr_is_sane` """
+
+def test_sub_expr_is_sane_flat_ast():
+    test_ast = ['!', 'p', 'or', '~', 'q']
+    assert sub_expr_is_sane(test_ast) == True
+
+
+def test_sub_expr_is_sane_ast_has_too_many_terms(): 
+    test_ast = ['p', 'q', 'r']
+    with pytest.raises(ValueError):
+        ast_is_sane(test_ast)
+
+
+def test_sub_expr_is_sane_flat_ast_has_too_many_binary_ops():
+    test_ast = ['p', 'and', 'q', 'v', 'r']
+    with pytest.raises(ValueError):
+        ast_is_sane(test_ast)
+
+
 """ Test `ast_is_sane` """
 
 def test_ast_is_sane_flat_ast():
