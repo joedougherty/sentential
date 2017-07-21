@@ -3,8 +3,6 @@ from operator import and_, not_, or_
 from sentential.utils import (list_is_nested, resolve_left_innermost,
                              flatten_left_innermost, reduce_ast, ast_to_stack)
 
-""" Tests pertaining to sentential.utils """
-
 """ Test `list_is_nested` """
 
 def test_flat_empty_list():
