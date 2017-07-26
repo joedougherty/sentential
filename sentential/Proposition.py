@@ -4,9 +4,9 @@ from prettytable import PrettyTable
 
 from .grammar import expression_is_grammatical
 from .parser import tokenize, balanced_parens, read_from_tokens_gen
-from .utils import parenthesize, extract_variables
 from .sentential import derive_truth_value, generate_all_possible_truth_vals
 from .subexpression import ast_is_sane
+from .utils import parenthesize, extract_variables
 
 
 class Proposition:
@@ -15,7 +15,6 @@ class Proposition:
 
     Usage::
     >>> lnc = Proposition('''¬(p & ¬p)''')
-    <Proposition.Proposition at 0x7f8490845978>
 
     >>> lnc.truth_table()
     [OrderedDict([('p', True), ('expr_truth_value', True)]),
