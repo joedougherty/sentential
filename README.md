@@ -1,5 +1,7 @@
 # SENTENTIAL #
 
+[![Build Status](https://travis-ci.org/joedougherty/sentential.svg?branch=master)](https://travis-ci.org/joedougherty/sentential)
+
 An interpreter for sentential logic (propositional calculus) written in Python.
 
 Very much a work in progress.
