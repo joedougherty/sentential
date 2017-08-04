@@ -1,2 +1,5 @@
 Converting arbitrary statements to CNF:
 	http://www.eecs.yorku.ca/course_archive/2009-10/S/3401/slides/02_CNF_Horn.pdf
+
+Truth table -> CNF/DNF
+	https://www.youtube.com/watch?v=tpdDlsg4Cws
