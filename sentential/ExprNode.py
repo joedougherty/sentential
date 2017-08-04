@@ -22,4 +22,8 @@ class ExprNode:
         return term[0]
 
     def eval(self):
-        self.truth_value = bin_op(resolve_term(raw_left), resolve_term(raw_right))
+        if isinstance(self.raw_left, ExprNode):
+            self.raw_left.eval()
+        if isinstance(self.raw_right, ExprNode):
+            self.raw_right.eval()
+        return bin_op(resolve_term(raw_left), resolve_term(raw_right))
