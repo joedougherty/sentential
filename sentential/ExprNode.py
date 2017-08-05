@@ -1,7 +1,7 @@
 from collections import namedtuple
 from operator import not_
 
-from sentential.evaluator import resolve_term_negation
+from .evaluator import resolve_term_negation
 
 """
 Provides models and tools for converting a nested list AST 
