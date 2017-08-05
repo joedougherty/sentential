@@ -35,7 +35,9 @@ class Proposition:
         balanced_parens(parenthesize(expr))
         tokens = tokenize(parenthesize(expr))
         expression_is_grammatical(tokens)
-        ast_is_sane(read_from_tokens_gen((t for t in tokens), evaluate_tokens=False))
+        ast = read_from_tokens_gen((t for t in tokens), evaluate_tokens=False)
+        ast_is_sane(ast)
+        self.ast = ast
         self.expr = expr
         self.expr_vars = extract_variables(tokenize(expr))
         self._truth_table = None
