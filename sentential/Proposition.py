@@ -78,6 +78,26 @@ class Proposition:
             t.add_row([row.get(x) for x in self.expr_vars] + [row.get('expr_truth_value')])
         print(t)
 
+    def _double_negation_elimination(self, found_terms):
+        return [t.replace('~~','') for t in found_terms]
+
+    def _negate_terms(self, row):
+        terms = []
+        for k, v in row.items():
+            if k != 'expr_truth_value':
+                if v == True:
+                    terms.append('~{}'.format(k))
+                else:
+                    terms.append(k)
+
+        return set(self._double_negation_elimination(terms))
+
+    def cnf(self):
+        found_clauses = []
+        for row in self.truth_table(cond=lambda x: x['expr_truth_value'] == False):
+            found_clauses.append(self._negate_terms(row))
+        return found_clauses
+
     def _compute_truth_table(self):
         var_truth_vals = generate_all_possible_truth_vals(self.expr)
         for tv_dict in var_truth_vals:
