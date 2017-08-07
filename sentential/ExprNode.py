@@ -4,32 +4,48 @@ from operator import not_
 from .evaluator import resolve_term_negation
 
 """
-Provides models and tools for converting a nested list AST 
+Provides models and tools for converting a nested list AST
 into a tree model (given by ExprNode) and vice versa.
 """
 
-token = namedtuple('token', ['TOKENTYPE', 'token']) 
+token = namedtuple('token', ['TOKENTYPE', 'token'])
+
+def negation_interpreter(list_of_tokens, negation_match_test, term_match_test):
+    collected = []
+    while negation_match_test(list_of_tokens[0]):
+        collected.append(list_of_tokens.pop(0))
+    if isinstance(list_of_tokens[0], list):
+        return collected
+    elif term_match_test(list_of_tokens[0]):
+        collected.append(list_of_tokens.pop(0))
+        return collected
+    else:
+        raise Exception("I don't know what to do with: {}!".format(list_of_tokens[0]))
 
 class ExprNode:
     """
-    Model a sentential logic subexpression 
+    Model a sentential logic subexpression
     with a binary tree-like structure.
     """
-    def __init__(self, bin_op, left, right):
+    def __init__(self, bin_op, left, right, preceding_negations=None):
         self.bin_op = bin_op
         self.left = left
         self.right = right
-        
+        self.preceding_negations = preceding_negations
+
     def resolve_term(self, term):
-        if isinstance(term, NodeExpr):
-            return self.resolve_term(term)
+        if isinstance(term, ExprNode):
+            return term.eval()
         else:
             if term[0] == not_:
                 return resolve_term_negation(term)
             return term[0]
 
     def eval(self):
-        return bin_op(resolve_term(left), resolve_term(right))
+        if self.preceding_negations is None or (self.preceding_negations % 2 == 0):
+            return self.bin_op(self.resolve_term(self.left), self.resolve_term(self.right))
+        else:
+            return not_(self.bin_op(self.resolve_term(self.left), self.resolve_term(self.right)))
 
 
 def treeify(ast):
