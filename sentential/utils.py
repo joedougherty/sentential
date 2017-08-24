@@ -118,7 +118,7 @@ def deparenthesize(expr):
     return expr
 
 
-def extract_variables(expr):
+def extract_variables(expr, sort_vars=False):
     """
     We do this rather than use set() + a list comprehension
     to retain order of appearance in the expression.
@@ -127,4 +127,8 @@ def extract_variables(expr):
     for token in expr:
         if token_is_variable(token) and token not in found:
             found.append(token)
+
+    if sort_vars:
+        found.sort()
+
     return found
