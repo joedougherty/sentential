@@ -1,7 +1,6 @@
 from copy import deepcopy
 from operator import or_, and_, not_
 
-from sentential import Proposition
 from sentential.environment import conditional, biconditional
 from sentential.grammar import IFTHEN, IFF, OR, AND
 
