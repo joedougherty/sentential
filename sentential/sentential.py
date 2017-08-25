@@ -38,7 +38,7 @@ def derive_truth_value(expression, var_truth_values):
     return reduce_ast(read_from_tokens_gen((t for t in tokens), env=env), eval_cell)
 
 
-def generate_all_possible_truth_vals(expr):
+def generate_all_possible_truth_vals(expr, sort_vars=False):
     """
     Given a set of variables, return a list of all possible
     dicts where:
@@ -52,9 +52,15 @@ def generate_all_possible_truth_vals(expr):
      {'q': False, 'p': True},
      {'q': False, 'p': False}]
     """
+
+    expr_vars = extract_variables(tokenize(expr))
+
+    if sort_vars:
+        expr_vars.sort()
+
     collection = []
-    for p in product((True, False), repeat=len(extract_variables(tokenize(expr)))):
-        collection.append(OrderedDict(zip(extract_variables(tokenize(expr)), p)))
+    for p in product((True, False), repeat=len(expr_vars)):
+        collection.append(OrderedDict(zip(expr_vars, p)))
     return collection
 
 def same_truth_table(p1, p2):

@@ -95,14 +95,8 @@ class Proposition:
 
         return set(self._double_negation_elimination(terms))
 
-    def cnf(self):
-        found_clauses = []
-        for row in self.truth_table(cond=lambda x: x['expr_truth_value'] == False):
-            found_clauses.append(self._negate_terms(row))
-        return found_clauses
-
-    def _compute_truth_table(self):
-        var_truth_vals = generate_all_possible_truth_vals(self.expr)
+    def _compute_truth_table(self, sort_vars=False):
+        var_truth_vals = generate_all_possible_truth_vals(self.expr, sort_vars=sort_vars)
         for tv_dict in var_truth_vals:
             tv_dict['expr_truth_value'] = derive_truth_value(self.expr, tv_dict)
         return var_truth_vals
