@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from collections import OrderedDict
-from copy import deepcopy
+from copy import copy, deepcopy
 from itertools import product
 
 from .environment import ENV
