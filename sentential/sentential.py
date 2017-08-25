@@ -56,3 +56,25 @@ def generate_all_possible_truth_vals(expr):
     for p in product((True, False), repeat=len(extract_variables(tokenize(expr)))):
         collection.append(OrderedDict(zip(extract_variables(tokenize(expr)), p)))
     return collection
+
+def same_truth_table(p1, p2):
+    """
+    Do two Propositions have the same truth table? Let's find out!
+    """
+    p1 = deepcopy(p1)
+    p2 = deepcopy(p2)
+
+    p1_vars = copy(p1.expr_vars)
+    p2_vars = copy(p2.expr_vars)
+    p1_vars.sort()
+    p2_vars.sort()
+
+    if p1_vars != p2_vars:
+        return False
+
+    if p1.truth_table() == p2.truth_table():
+        return True
+
+    p1_truth_table = p1._compute_truth_table(sort_vars=True)
+    p2_truth_table = p2._compute_truth_table(sort_vars=True)
+    return p1_truth_table == p2_truth_table

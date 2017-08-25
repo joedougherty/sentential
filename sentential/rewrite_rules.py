@@ -5,7 +5,7 @@ from sentential import Proposition
 from sentential.environment import conditional, biconditional
 from sentential.grammar import IFTHEN, IFF, OR, AND
 
-from Expression import Term, Expression
+from sentential.Expression import Term, Expression
 
 def is_bin_op(token):
     return token in IFTHEN + IFF + OR + AND
@@ -43,7 +43,7 @@ def conditional_rule(expression):
                 right=expr_copy.right,
                 negated=expr_copy.negated)
 
-def biconditional_rule(expr):
+def biconditional_rule(expression):
     if isinstance(expression, Expression) and expression.bin_op in IFF:
         expr_copy = deepcopy(expression)
         return Expression(bin_op='&', 
@@ -53,8 +53,8 @@ def biconditional_rule(expr):
                       negated=expr_copy.negated),
                   right=Expression(bin_op='v', 
                       left=expr_copy.left, 
-                      right=negate(expr_copy.right,
-                      negated=expr_copy.negated)))
+                      right=negate(expr_copy.right),
+                      negated=expr_copy.negated))
 
 def implication_rule(expression):
     if expression.bin_op in IFTHEN:
@@ -76,8 +76,12 @@ def distribution_rule(root):
             distributee = root.right
             distribute_over = root.left
         else:
-            distributee = root.left
-            distribute_over = root.right
+            if hasattr(root.right, 'bin_op') and (root.right.bin_op in AND):
+                distributee = root.left
+                distribute_over = root.right
+            if hasattr(root.left, 'bin_op') and (root.left.bin_op in AND):
+                distributee = root.right
+                distribute_over = root.left
 
         return Expression(bin_op='&',
                             left=Expression('v',
@@ -107,7 +111,7 @@ def find_matching_node(expr, matching_fn, parent_node=None, parent_rel=None):
             return False
 
 
-def apply_rule(expr, rewrite_rule, matching_fn):
+def apply_rule(expr, rewrite_rule, matching_fn, trace=False):
     """
     Recursively apply rule until it can't be applied any more.
     """
@@ -118,21 +122,24 @@ def apply_rule(expr, rewrite_rule, matching_fn):
         if found_node:
             raise Exception("???")
         return expr
+
+    if trace:
+        print('{} produced by {}'.format(expr, matching_fn.__name__))
                                   
     if found_parent_node is None:                                                   
         expr = rewrite_rule(found_node)
-        return apply_rule(expr, rewrite_rule, matching_fn)                                         
+        return apply_rule(expr, rewrite_rule, matching_fn, trace=trace)                                         
     else:                                                                           
         setattr(found_parent_node, found_parent_rel, rewrite_rule(found_node))  
-        return apply_rule(expr, rewrite_rule, matching_fn)
+        return apply_rule(expr, rewrite_rule, matching_fn, trace=trace)
 
 def convert_conjunctions_to_clauses(expression):
     return expression
 
-def cnf(expression):
-    expression = apply_rule(expression, implication_rule, expression_is_implication)
-    expression = apply_rule(expression, negation_rule, expression_is_negated)
-    expression = apply_rule(expression, distribution_rule, expression_can_be_distributed)
+def cnf(expression, trace=False):
+    expression = apply_rule(expression, implication_rule, expression_is_implication, trace=trace)
+    expression = apply_rule(expression, negation_rule, expression_is_negated, trace=trace)
+    expression = apply_rule(expression, distribution_rule, expression_can_be_distributed, trace=trace)
     return convert_conjunctions_to_clauses(expression)
 
 ############# MATCHING RULES #############

@@ -1,0 +1,3 @@
+(((~p & ~q) v (~r v s)))
+
+pqrst = Proposition('''((p v q) -> (r -> s)) <-> ~t''')

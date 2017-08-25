@@ -123,7 +123,10 @@ def _treeify(ast, next_negation=None):
         left_term = negation_or_term
 
     if len(ast) == 0:
-        return Expression(None, _treeify(left_term), None, negated=preceding_negation)
+        if isinstance(left_term, Term):
+            return Expression(bin_op=None, left=left_term, right=None, negated=preceding_negation)
+        else:
+            return Expression(bin_op=None, left=_treeify(left_term), right=None, negated=preceding_negation)
     else:
         bin_op = ast.pop(0)
 
