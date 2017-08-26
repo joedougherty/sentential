@@ -1,10 +1,9 @@
 from copy import deepcopy
 from operator import or_, and_, not_
 
-from sentential.environment import conditional, biconditional
-from sentential.grammar import IFTHEN, IFF, OR, AND
-
-from sentential.Expression import Term, Expression
+from .environment import conditional, biconditional
+from .grammar import IFTHEN, IFF, OR, AND
+from .Expression import Term, Expression
 
 def is_bin_op(token):
     return token in IFTHEN + IFF + OR + AND
