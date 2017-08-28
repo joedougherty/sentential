@@ -193,6 +193,26 @@ def expression_can_be_distributed(node):
     return False
 
 
+def update_collected_terms(ct, group_cnf_call_result):
+    if isinstance(group_cnf_call_result, set):
+        ct.update(group_cnf_call_result)
+    else:
+        ct.add(group_cnf_call_result)
+
+    return ct
+
+
+def update_final_collection(fc, group_cnf_call_result):
+    if isinstance(group_cnf_call_result, list):
+        for item in group_cnf_call_result:
+            if item not in fc:
+                fc.append(item)
+    else:
+        if group_cnf_call_result not in fc:
+            fc.append(group_cnf_call_result)
+
+    return fc
+
 def group_cnf(expr, previous_op=None, previous_terms=None, final_collection=None):
     if final_collection is None:
         final_collection = list()
@@ -214,22 +234,22 @@ def group_cnf(expr, previous_op=None, previous_terms=None, final_collection=None
         else:
             collected_terms = set()
 
-        try:
-            collected_terms.add(group_cnf(expr.left, previous_op=expr.bin_op, previous_terms=collected_terms, final_collection=final_collection))
-        except:
-            collected_terms.update(group_cnf(expr.left, previous_op=expr.bin_op, previous_terms=collected_terms, final_collection=final_collection))
+        left_result = group_cnf(expr.left, previous_op=expr.bin_op, previous_terms=collected_terms, final_collection=final_collection)
+        right_result = group_cnf(expr.right, previous_op=expr.bin_op, previous_terms=collected_terms, final_collection=final_collection)
 
-        try:
-            collected_terms.add(group_cnf(expr.right, previous_op=expr.bin_op, previous_terms=collected_terms, final_collection=final_collection))
-        except:
-            collected_terms.update(group_cnf(expr.right, previous_op=expr.bin_op, previous_terms=collected_terms, final_collection=final_collection))
+        collected_terms = update_collected_terms(collected_terms, left_result)    
+        collected_terms = update_collected_terms(collected_terms, right_result)    
+
         return collected_terms
 
     if isinstance(expr, Expression) and expr.bin_op in AND:
         if final_collection is None:
             final_collection = list()
 
-        final_collection.append(group_cnf(expr.left, previous_op=expr.bin_op, final_collection=final_collection))
-        final_collection.append(group_cnf(expr.right, previous_op=expr.bin_op, final_collection=final_collection))
+        left_result = group_cnf(expr.left, previous_op=expr.bin_op, final_collection=final_collection)
+        right_result = group_cnf(expr.right, previous_op=expr.bin_op, final_collection=final_collection)
+
+        final_collection = update_final_collection(final_collection, left_result)
+        final_collection = update_final_collection(final_collection, right_result)
 
     return final_collection
