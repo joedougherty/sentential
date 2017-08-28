@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from copy import deepcopy
 from operator import or_, and_, not_
 
@@ -8,8 +10,10 @@ from .Expression import Term, Expression
 def is_bin_op(token):
     return token in IFTHEN + IFF + OR + AND
 
+
 def is_flat(expression):
     return isinstance(expression.left, Term) and isinstance(expression.right, Term)
+
 
 def negate(expression):
     if isinstance(expression, Expression) or isinstance(expression, Term):
@@ -23,6 +27,7 @@ def negate(expression):
             return '&'
     raise Exception("I don't know how to negate {}!".format(expr_copy))
 
+
 def negation_rule(expression):
     if isinstance(expression, Expression) and expression.negated:
         expr_copy = deepcopy(expression)
@@ -33,6 +38,7 @@ def negation_rule(expression):
                 right=negate(expr_copy.right), 
                 negated=False)
 
+
 def conditional_rule(expression):
     if isinstance(expression, Expression) and expression.bin_op in IFTHEN:
         expr_copy = deepcopy(expression)
@@ -40,6 +46,7 @@ def conditional_rule(expression):
                 left=negate(expr_copy.left),
                 right=expr_copy.right,
                 negated=expr_copy.negated)
+
 
 def biconditional_rule(expression):
     if isinstance(expression, Expression) and expression.bin_op in IFF:
@@ -54,6 +61,7 @@ def biconditional_rule(expression):
                       right=negate(expr_copy.right),
                       negated=expr_copy.negated))
 
+
 def implication_rule(expression):
     if expression.bin_op in IFTHEN:
         return conditional_rule(expression)
@@ -61,6 +69,7 @@ def implication_rule(expression):
         return biconditional_rule(expression)
     else:
         return expression
+
 
 def distribution_rule(root):
     """
@@ -131,8 +140,10 @@ def apply_rule(expr, rewrite_rule, matching_fn, trace=False):
         setattr(found_parent_node, found_parent_rel, rewrite_rule(found_node))  
         return apply_rule(expr, rewrite_rule, matching_fn, trace=trace)
 
+
 def convert_conjunctions_to_clauses(expression):
     return expression
+
 
 def cnf(expression, trace=False):
     expression = apply_rule(expression, implication_rule, expression_is_implication, trace=trace)
@@ -180,3 +191,45 @@ def expression_can_be_distributed(node):
             and (at_least_one_side_contains_and(node) == True)):
         return True
     return False
+
+
+def group_cnf(expr, previous_op=None, previous_terms=None, final_collection=None):
+    if final_collection is None:
+        final_collection = list()
+    
+    if isinstance(expr, Expression) and expr.bin_op is None:
+        return group_cnf(expr.left)
+
+    if isinstance(expr, Term):
+        if previous_op in AND:
+            s = set()
+            s.add(expr)
+            return s
+        else:
+            return str(expr)
+
+    if isinstance(expr, Expression) and expr.bin_op in OR:
+        if previous_op in OR:
+            collected_terms = previous_terms
+        else:
+            collected_terms = set()
+
+        try:
+            collected_terms.add(group_cnf(expr.left, previous_op=expr.bin_op, previous_terms=collected_terms, final_collection=final_collection))
+        except:
+            collected_terms.update(group_cnf(expr.left, previous_op=expr.bin_op, previous_terms=collected_terms, final_collection=final_collection))
+
+        try:
+            collected_terms.add(group_cnf(expr.right, previous_op=expr.bin_op, previous_terms=collected_terms, final_collection=final_collection))
+        except:
+            collected_terms.update(group_cnf(expr.right, previous_op=expr.bin_op, previous_terms=collected_terms, final_collection=final_collection))
+        return collected_terms
+
+    if isinstance(expr, Expression) and expr.bin_op in AND:
+        if final_collection is None:
+            final_collection = list()
+
+        final_collection.append(group_cnf(expr.left, previous_op=expr.bin_op, final_collection=final_collection))
+        final_collection.append(group_cnf(expr.right, previous_op=expr.bin_op, final_collection=final_collection))
+
+    return final_collection
