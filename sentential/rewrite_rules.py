@@ -240,7 +240,10 @@ def group_cnf(expr, previous_op=None, previous_terms=None, final_collection=None
         collected_terms = update_collected_terms(collected_terms, left_result)    
         collected_terms = update_collected_terms(collected_terms, right_result)    
 
-        return collected_terms
+        if len(final_collection) == 0:
+            return [collected_terms]
+        else:
+            return collected_terms
 
     if isinstance(expr, Expression) and expr.bin_op in AND:
         if final_collection is None:

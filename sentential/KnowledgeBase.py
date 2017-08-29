@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from collections import OrderedDict
 from copy import copy, deepcopy
 
+from .Expression import expressify
 from .rewrite_rules import cnf, group_cnf
 
 
@@ -32,10 +34,16 @@ def resolve(clause1, clause2):
 
 class KnowledgeBase:
     def __init__(self):
-        self._axioms = list()
+        self._axioms = OrderedDict()
         self._clause_collection = list()
-        
-    def add_axiom(self, axiom_as_prop):
-        for clause in group_cnf(cnf(expressify(axiom_as_prop))):
-            self._clause_collection.append(clause)
 
+    def add_axiom(self, axiom_as_prop):
+        cnf_exp = cnf(expressify(axiom_as_prop))
+        cnf_clauses = group_cnf(cnf_exp)
+
+        self._axioms[len(self._axioms)] = {'proposition': axiom_as_prop, 
+                                           'cnf': cnf_exp, 
+                                           'clauses': cnf_clauses}
+
+        for clause in cnf_clauses:
+            self._clause_collection.append(clause)
