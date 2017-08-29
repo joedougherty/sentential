@@ -226,7 +226,10 @@ def group_cnf(expr, previous_op=None, previous_terms=None, final_collection=None
             s.add(expr)
             return s
         else:
-            return str(expr)
+            if len(final_collection) == 0:
+                return [set(str(expr))]
+            else:
+                return str(expr)
 
     if isinstance(expr, Expression) and expr.bin_op in OR:
         if previous_op in OR:
