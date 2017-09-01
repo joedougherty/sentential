@@ -107,7 +107,7 @@ def expressify(proposition):
     return _treeify(prop)
 
 
-def _treeify(ast, next_negation=None):
+def _treeify(ast, next_negation=None, previous_level_was_negated=False):
     """
     Convert nested-list AST into a tree.
 
@@ -124,9 +124,15 @@ def _treeify(ast, next_negation=None):
 
     if len(ast) == 0:
         if isinstance(left_term, Term):
-            return Expression(bin_op=None, left=left_term, right=None, negated=preceding_negation)
-        else:
-            return Expression(bin_op=None, left=_treeify(left_term), right=None, negated=preceding_negation)
+            return Expression(bin_op=None, 
+                    left=left_term, 
+                    right=None, 
+                    negated=preceding_negation)
+        else: # The negation needs to get passed to the subsequent call to _treeify 
+            return Expression(bin_op=None, 
+                    left=_treeify(left_term, previous_level_was_negated=preceding_negation), 
+                    right=None, 
+                    negated=previous_level_was_negated)
     else:
         bin_op = ast.pop(0)
 
@@ -138,14 +144,12 @@ def _treeify(ast, next_negation=None):
         right_term = negation_or_term
 
     if isinstance(left_term, list):
-        left_term = _treeify(left_term)
+        left_term = _treeify(left_term, previous_level_was_negated=preceding_negation)
 
     if isinstance(right_term, list):
-        right_term = _treeify(right_term, next_negation=next_negation)
+        right_term = _treeify(right_term, previous_level_was_negated=next_negation)
 
-    if next_negation != None:
-        return Expression(bin_op, left_term, right_term, negated=next_negation)
-    return Expression(bin_op, left_term, right_term, negated=preceding_negation)
+    return Expression(bin_op, left_term, right_term, negated=previous_level_was_negated)
 
 
 def listify_Expression(expression_node):
