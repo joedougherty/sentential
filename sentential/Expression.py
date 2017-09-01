@@ -7,7 +7,7 @@ from collections import namedtuple
 from copy import deepcopy
 from operator import not_
 
-from sentential import Proposition
+from .Proposition import Proposition
 
 """
 Provides models and tools for converting a nested list AST
