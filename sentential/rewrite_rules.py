@@ -193,6 +193,18 @@ def expression_can_be_distributed(node):
     return False
 
 
+def terms_are_complements(t1, t2):
+    if len(t1) == len(t2):
+        return False
+    t1, t2 = t1[-1], t2[-1]
+    return t1 == t2
+
+
+def clause_is_tautology(clause):
+    clause_copy = deepcopy(clause)
+    return len(clause_copy) == 2 and (terms_are_complements(clause_copy.pop(), clause_copy.pop()))
+
+
 def update_collected_terms(ct, group_cnf_call_result):
     if isinstance(group_cnf_call_result, set):
         ct.update(group_cnf_call_result)
@@ -212,6 +224,7 @@ def update_final_collection(fc, group_cnf_call_result):
             fc.append(group_cnf_call_result)
 
     return fc
+
 
 def group_cnf(expr, previous_op=None, previous_terms=None, final_collection=None):
     if final_collection is None:
@@ -255,4 +268,4 @@ def group_cnf(expr, previous_op=None, previous_terms=None, final_collection=None
         final_collection = update_final_collection(final_collection, left_result)
         final_collection = update_final_collection(final_collection, right_result)
 
-    return final_collection
+    return [c for c in final_collection if not clause_is_tautology(c)]

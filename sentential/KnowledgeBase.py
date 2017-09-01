@@ -7,19 +7,6 @@ from .Expression import expressify
 from .rewrite_rules import cnf, group_cnf
 
 
-def terms_are_complements(t1, t2):
-    if len(t1) == len(t2):
-        return False
-    try:
-        if t1 == t2[1]:
-            return True
-        if t1[1] == t2:
-            return True
-        return False
-    except:
-        return False
-
-
 def resolve(clause1, clause2):
     combined_clause = copy(clause1)
     combined_clause.update(clause2)
