@@ -245,7 +245,9 @@ def _group_cnf(expr, previous_op=None, previous_terms=None, final_collection=Non
             return s
         else:
             if len(final_collection) == 0 and previous_op is None:
-                return [set(str(expr))]
+                s = set()
+                s.add(expr)
+                return [s]
             else:
                 return str(expr)
 

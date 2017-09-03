@@ -20,3 +20,7 @@ def test_third_prop():
 
 def single_term_proposition():
     assert group_cnf(cnf(expressify(Proposition('''p''')))) == [{'p'}]
+
+
+def single_negated_term_proposition():
+    assert group_cnf(cnf(expressify(Proposition('''!r''')))) == [{'~r'}]
