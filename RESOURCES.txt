@@ -9,3 +9,6 @@ Propositional Resolution:
 
 Resolution examples:
 	https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-825-techniques-in-artificial-intelligence-sma-5504-fall-2002/lecture-notes/Lecture7FinalPart1.pdf
+
+Set of Support:
+    http://www.doc.ic.ac.uk/~sgc/teaching/pre2012/v231/lecture9.html
