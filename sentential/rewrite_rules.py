@@ -25,6 +25,11 @@ def negate(expression):
             return 'v'
         if expression in ['or', 'v',]:
             return '&'
+    if isinstance(expression, str):
+        if expression.startswith('~'):
+            return expression[1]
+        else:
+            return '~{}'.format(expression)
     raise Exception("I don't know how to negate {}!".format(expr_copy))
 
 
@@ -246,7 +251,7 @@ def _group_cnf(expr, previous_op=None, previous_terms=None, final_collection=Non
         else:
             if len(final_collection) == 0 and previous_op is None:
                 s = set()
-                s.add(expr)
+                s.add(str(expr))
                 return [s]
             else:
                 return str(expr)
