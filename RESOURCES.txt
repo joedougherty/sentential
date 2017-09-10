@@ -12,3 +12,6 @@ Resolution examples:
 
 Set of Support:
     http://www.doc.ic.ac.uk/~sgc/teaching/pre2012/v231/lecture9.html
+
+AI Overview (general):
+    http://www.doc.ic.ac.uk/~sgc/teaching/pre2012/v231/
