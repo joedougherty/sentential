@@ -15,3 +15,6 @@ Set of Support:
 
 AI Overview (general):
     http://www.doc.ic.ac.uk/~sgc/teaching/pre2012/v231/
+
+Resolution overview (in the first-order case):
+	https://classes.soe.ucsc.edu/cmps290g/Fall09/Papers/Ch12_ResolutionTheoremProving.pdf
