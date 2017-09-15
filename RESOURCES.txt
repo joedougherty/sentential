@@ -32,6 +32,9 @@ Set of Support:
 							derived_from_negated_clause=new_clause_derived_from_negated_goal,
 							...)
 
+Set of Support v. Linear Input:
+	https://math.stackexchange.com/questions/1627473/propositional-logic-resolution-strategies
+
 AI Overview (general):
     http://www.doc.ic.ac.uk/~sgc/teaching/pre2012/v231/
 
