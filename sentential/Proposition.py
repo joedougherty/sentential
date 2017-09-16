@@ -31,7 +31,7 @@ class Proposition:
     >>> lnc.is_theorem()
     True
     """
-    def __init__(self, expr):
+    def __init__(self, expr, desc=None):
         balanced_parens(parenthesize(expr))
         tokens = tokenize(parenthesize(expr))
         expression_is_grammatical(tokens)
@@ -41,6 +41,7 @@ class Proposition:
         self.expr = expr
         self.expr_vars = extract_variables(tokenize(expr))
         self._truth_table = None
+        self.desc = desc
 
     def truth_table(self, cond=None):
         """

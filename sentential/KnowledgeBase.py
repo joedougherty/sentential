@@ -57,4 +57,5 @@ class KnowledgeBase:
             self.add_goal(goal)
 
         proof_attempt = Proof(goal, negated_goal, self._gather_clauses())
-        return proof_attempt
+        self.stored_proofs.append(proof_attempt)
+        return proof_attempt.find()
