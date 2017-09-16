@@ -42,16 +42,6 @@ class KnowledgeBase:
                 return True
         raise Exception("No goal currently defined!")
 
-    def add_goal(self, goal_as_prop):
-        self._goal = new_clause
-
-        cnf_expr = cnf(negate(expressify(goal_as_prop)))
-        clauses = group_cnf(cnf_expr)
-
-        self._axioms[len(self._axioms)] = {'proposition': goal_as_prop,
-                                           'cnf': cnf_expr,
-                                           'clauses': clauses}
-
     def _gather_clauses(self):
         clause_collection = []
         for idx, axiom in self._axioms.items():
