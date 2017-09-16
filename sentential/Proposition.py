@@ -37,7 +37,6 @@ class Proposition:
         expression_is_grammatical(tokens)
         ast = read_from_tokens_gen((t for t in tokens), evaluate_tokens=False)
         ast_is_sane(ast)    
-
         self.raw_ast = ast
         self.expr = expr
         self.expr_vars = extract_variables(tokenize(expr))
