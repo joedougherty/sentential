@@ -135,11 +135,11 @@ class Proof:
                             return True
         return False
 
-    def find(self):
+    def _find(self):
         if set() in self.clause_collection:
             return True
         elif self.prove_by_set_of_support():
-            return self.find()
+            return self._find()
         elif self.cannot_resolve_further():
             return False
         else:
@@ -149,4 +149,8 @@ class Proof:
             #
             # If cases like this can occur, there's a chance of
             # getting stuck in an infinite loop
-            return self.find()
+            return self._find()
+
+    def find(self):
+        self.conclusion = self._find()
+        return self.conclusion

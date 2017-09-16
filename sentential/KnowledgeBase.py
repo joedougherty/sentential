@@ -13,6 +13,7 @@ class KnowledgeBase:
     def __init__(self):
         self._axioms = OrderedDict()
         self._goal = None
+        self.stored_proofs = list()
 
     def add_axiom(self, axiom_as_prop, axiom_is_goal=False):
         if axiom_is_goal:
@@ -26,6 +27,9 @@ class KnowledgeBase:
                                            'is_goal': axiom_is_goal}
 
     def add_goal(self, goal_as_prop):
+        if self._goal:
+            raise Exception("{} is already defined as the goal! Use .remove_goal() before adding a new goal.".format(self._goal))
+
         if not isinstance(goal_as_prop, Proposition):
             raise Exception("Goal must be of the type Proposition!")
 
@@ -39,8 +43,6 @@ class KnowledgeBase:
         for k, v in self._axioms.items():
             if v.get('is_goal') == True:
                 del self._axioms[k]
-                return True
-        raise Exception("No goal currently defined!")
 
     def _gather_clauses(self):
         clause_collection = []
@@ -51,11 +53,11 @@ class KnowledgeBase:
     def prove(self, goal=None):
         if goal is None:
             goal = self._goal_as_unit_clause
-            negated_goal = self._negated_goal_as_unit_clause
         else:
             self.remove_goal()
             self.add_goal(goal)
 
+        negated_goal = self._negated_goal_as_unit_clause 
         proof_attempt = Proof(goal, negated_goal, self._gather_clauses())
         self.stored_proofs.append(proof_attempt)
         return proof_attempt.find()
