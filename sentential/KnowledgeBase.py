@@ -3,16 +3,10 @@
 from collections import OrderedDict, namedtuple
 from copy import copy, deepcopy
 
-<<<<<<< HEAD
 from .Expression import expressify
 from .Proof import Proof
 from .Proposition import Proposition
 from .rewrite_rules import cnf, group_cnf, negate, terms_are_complements
-=======
-from sentential.Expression import expressify
-from sentential.rewrite_rules import cnf, group_cnf, negate, terms_are_complements
-print('Update these imports before re-integrating into core project!')
->>>>>>> 136ed30043dc8af173f6a141f6d2f39b03858b99
 
 
 class KnowledgeBase:
