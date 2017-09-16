@@ -31,8 +31,8 @@ class KnowledgeBase:
 
         self.add_axiom(goal_as_prop, axiom_is_goal=True)
         self._goal = goal_as_prop
-        self._goal_as_unit_clause = group_cnf(cnf(expressify(goal_as_prop)))
-        self._negated_goal_as_unit_clause = group_cnf(cnf(negate(expressify(goal_as_prop))))
+        self._goal_as_unit_clause = group_cnf(cnf(expressify(goal_as_prop)))[0]
+        self._negated_goal_as_unit_clause = group_cnf(cnf(negate(expressify(goal_as_prop))))[0]
 
     def remove_goal(self):
         self._goal, self._goal_as_unit_clause, self._negated_goal_as_unit_clause = None, None, None
@@ -50,8 +50,8 @@ class KnowledgeBase:
 
     def prove(self, goal=None):
         if goal is None:
-            goal = self._goal_as_unit_clause[0]
-            negated_goal = self._negated_goal_as_unit_clause[0]
+            goal = self._goal_as_unit_clause
+            negated_goal = self._negated_goal_as_unit_clause
         else:
             self.remove_goal()
             self.add_goal(goal)
