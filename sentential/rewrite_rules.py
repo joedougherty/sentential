@@ -30,7 +30,7 @@ def negate(expression):
             return expression[1]
         else:
             return '~{}'.format(expression)
-    raise Exception("I don't know how to negate {}!".format(expr_copy))
+    raise Exception("I don't know how to negate {}!".format(expression))
 
 
 def negation_rule(expression):
