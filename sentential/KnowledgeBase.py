@@ -13,7 +13,7 @@ class KnowledgeBase:
     def __init__(self):
         self._axioms = OrderedDict()
         self._goal = None
-        self.stored_proofs = list()
+        self.run_proofs = list()
 
     def add_axiom(self, axiom_as_prop, axiom_is_goal=False):
         if axiom_is_goal:
@@ -50,6 +50,12 @@ class KnowledgeBase:
             clause_collection = clause_collection + axiom.get('clauses')
         return clause_collection
 
+    def most_recent_proof(self):
+        if self.run_proofs:
+            return self.run_proofs[-1]
+        else:
+            raise Exception("Run a proof first!")
+
     def prove(self, goal=None):
         if goal is None:
             goal = self._goal_as_unit_clause
@@ -59,5 +65,5 @@ class KnowledgeBase:
 
         negated_goal = self._negated_goal_as_unit_clause 
         proof_attempt = Proof(goal, negated_goal, self._gather_clauses())
-        self.stored_proofs.append(proof_attempt)
+        self.run_proofs.append(proof_attempt)
         return proof_attempt.find()
