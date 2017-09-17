@@ -9,9 +9,10 @@ from .rewrite_rules import cnf, group_cnf, negate, terms_are_complements
 resolution_result = namedtuple('resolution_result', ['clause', 'resolved_by'])
 
 class ResolutionAttempt:
-    def __init__(self, c1_set, c2_set, resolve_by):
+    def __init__(self, c1_set, c2_set, resolve_by, resolvent=None):
         self.c1, self.c2 = frozenset(c1_set), frozenset(c2_set)
         self.resolve_by = resolve_by
+        self.resolvent = resolvent
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -25,7 +26,7 @@ class ResolutionAttempt:
         return hash(frozenset((self.c1, self.c2, self.resolve_by)))
 
     def __repr__(self):
-        return """{{ {}, {} }}, resolve_by='{}'""".format(self.c1, self.c2, self.resolve_by)
+        return """{{{}, {}}}, resolve_by='{}', resolvent='{}'""".format(self.c1, self.c2, self.resolve_by, self.resolvent)
 
 def minimum_pair_comparisons(L):
     if isinstance(L, set):
@@ -142,7 +143,7 @@ class Proof:
                             self.clause_collection.add(resolvent.clause)
                             self.set_of_support.add(resolvent.clause)
                             self.attempted_combinations.add(ResolutionAttempt(c1, c2, literal))
-                            self.steps.append(ResolutionAttempt(c1, c2, literal))
+                            self.steps.append(ResolutionAttempt(c1, c2, literal, resolvent=resolvent.clause))
                             return True
         return False
 

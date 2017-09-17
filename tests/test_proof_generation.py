@@ -38,3 +38,12 @@ def test_unsatisfiable_clause_collection():
     unsatisfiable = Proof(goal, negated_goal, clause_collection=[c1, c2, c3, c4])
     # If a contradiction (empty clause) is found, the set of clauses is unsatisfiable
     assert unsatisfiable.find() == True
+
+def test_multiple_goal_clauses():
+    kb = KnowledgeBase()
+
+    kb.add_axiom(Proposition('''p -> q''')) 
+    kb.add_axiom(Proposition('''r -> s'''))
+    kb.add_goal(Proposition('''(p v r) -> (q v s)'''))
+
+    assert kb.prove() == True
