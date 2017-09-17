@@ -246,7 +246,7 @@ def _group_cnf(expr, previous_op=None, previous_terms=None, final_collection=Non
     if isinstance(expr, Term):
         if previous_op in AND:
             s = set()
-            s.add(expr)
+            s.add(str(expr))
             return s
         else:
             if len(final_collection) == 0 and previous_op is None:
