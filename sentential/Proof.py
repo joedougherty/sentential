@@ -34,7 +34,7 @@ def minimum_pair_comparisons(L):
     retlist = []
     for idx, item in enumerate(L):
         for element in L[idx+1:]:
-            retlist.append(tuple(item,element))
+            retlist.append((item,element))
     return retlist
 
 
@@ -87,10 +87,12 @@ class Proof:
         self.at_least_one_goal_containing_clause_exists = False
         self.steps = list()
 
+        '''
         if not self.there_are_clauses_that_contain_goal():
             raise Exception("There are no clauses that contain the goal!")
         else:
             self.at_least_one_goal_containing_clause_exists = True
+        '''
 
     def there_are_clauses_that_contain_goal(self):
         if self.at_least_one_goal_containing_clause_exists:
@@ -112,10 +114,10 @@ class Proof:
 
     def cannot_resolve_further(self):
         for pair_of_clauses in minimum_pair_comparisons(self.clause_collection):
-            potential_resolvents = would_resolve(pair_of_clauses.c1, pair_of_clauses.c2)
+            potential_resolvents = would_resolve(pair_of_clauses[0], pair_of_clauses[1])
             if potential_resolvents:
                 for literal in potential_resolvents:
-                    if ResolutionAttempt(pair_of_clauses.c1, pair_of_clauses.c2, literal) not in self.attempted_combinations:
+                    if ResolutionAttempt(pair_of_clauses[0], pair_of_clauses[1], literal) not in self.attempted_combinations:
                         return False
         return True
 
@@ -143,13 +145,12 @@ class Proof:
         elif self.cannot_resolve_further():
             return False
         else:
-            # Consider trying to generate/detect cases where:
-            #   prove_by_set_of_support returns False *AND*
-            #   cannot_resolve_futher return True
-            #
-            # If cases like this can occur, there's a chance of
-            # getting stuck in an infinite loop
-            return self._find()
+            if self.prove_by_set_of_support == False and self.cannot_resolve_further == False:
+                msg = "Evidently, there are still more possible clause combinations, but SOS thinks it is exhausted.\n"
+                msg += "Pretty sure this is not theoretically possible, so now you have an excellent opportunity to \n"
+                msg += "find and patch an important bug!\n"
+                raise Exception(msg)
+            return False
 
     def find(self):
         self.conclusion = self._find()
