@@ -31,7 +31,7 @@ def test_prob_4():
     resolution_possibilities = [resolve(c1, c2, resolve_by=literal) for literal in would_resolve(c1, c2)]
     
     generated_possibilities = [resolution_result(clause=frozenset({'~q', 'q', 'p', '~p'}), resolved_by='r'),
-     resolution_result(clause=frozenset({'r', '~q', '~r', 'q'}), resolved_by='~p'),
-     resolution_result(clause=frozenset({'r', '~r', 'p', '~p'}), resolved_by='q')]
-
-    assert resolution_possibilities == generated_possibilities
+                               resolution_result(clause=frozenset({'r', '~r', 'p', '~p'}), resolved_by='q'),
+                               resolution_result(clause=frozenset({'r', '~q', 'q', '~r'}), resolved_by='~p')]
+    # Order should not matter, so run set!
+    assert set(resolution_possibilities) == set(generated_possibilities)

@@ -64,7 +64,7 @@ def extract_clause_literal(clause):
         return str(i)
 
 
-def resolve(c1, c2):
+def _resolve(c1, c2):
     c1, c2 = set(deepcopy(c1)), set(deepcopy(c2))
     for literal in c1:
         if negate_literal(literal) in c2:
@@ -74,6 +74,18 @@ def resolve(c1, c2):
             combined_clause.remove(negate_literal(literal))
             return resolution_result(frozenset(combined_clause), literal)
     raise Exception("Could not resolve {} and {}!".format(c1, c2))
+
+
+def resolve(c1, c2, resolve_by=None):
+    if resolve_by:
+        c1, c2 = set(deepcopy(c1)), set(deepcopy(c2))
+        combined_clause = c1
+        combined_clause.update(c2)
+        combined_clause.remove(resolve_by)
+        combined_clause.remove(negate_literal(resolve_by))
+        return resolution_result(frozenset(combined_clause), resolve_by)
+    else:
+        return _resolve(c1, c2)
 
 
 class Proof:
