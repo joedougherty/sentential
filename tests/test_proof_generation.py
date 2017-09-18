@@ -114,3 +114,16 @@ def test_affirming_the_consequent():
     kb.add_goal(Proposition('''p'''))
 
     assert kb.prove() == False
+
+def test_construtive_dilemma():
+    '''
+    It is the inference that, if P implies Q and R implies S and either P or R is true, then Q or S has to be true.
+    Source: https://en.wikipedia.org/wiki/Constructive_dilemma
+    '''
+    kb = KnowledgeBase()
+
+    axioms = ['p -> q', 'r -> s', 'p v r']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''q v s'''))
+
+    assert kb.prove() == True
