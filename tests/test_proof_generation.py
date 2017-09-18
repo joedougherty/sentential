@@ -130,7 +130,14 @@ def test_contraposition_theorem():
     kb = KnowledgeBase()
 
     kb.add_axiom(Proposition('''p -> q'''))
-    kb.add_axiom(Proposition('''(~q -> ~p)'''))
     kb.add_goal(Proposition('''(~q -> ~p)'''))
+
+    assert kb.prove() == True
+
+def test_implication_distribution():
+    kb = KnowledgeBase()
+
+    kb.add_axiom(Proposition('''p -> (q -> r)'''))
+    kb.add_goal(Proposition('''(p -> q) -> (p -> r)'''))
 
     assert kb.prove() == True
