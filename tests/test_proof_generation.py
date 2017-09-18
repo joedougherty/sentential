@@ -58,6 +58,8 @@ def test_another_multiple_goal_clauses():
 
     assert kb.prove() == True
 
+''' https://www.ics.uci.edu/~welling/teaching/271fall09/HW6_sol.pdf '''
+
 def test_medium_sized_kb():
     kb = KnowledgeBase()
 
@@ -66,3 +68,13 @@ def test_medium_sized_kb():
     kb.add_goal(Proposition('''h'''))
 
     assert kb.prove() == True
+
+def test_medium_sized_kb_v2():
+    kb = KnowledgeBase()
+
+    axioms = ['p -> q', 'e -> b', 'r -> q', '(m & n) -> q', '(a & b) -> p', 'a -> m', 'c -> m', 'd -> n', 'd', 'a']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''q'''))
+
+    assert kb.prove() == True
+

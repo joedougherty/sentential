@@ -92,14 +92,14 @@ def resolve(c1, c2, resolve_by=None):
 class Proof:
     def __init__(self, goal_as_cnf_clause, negated_goal_as_cnf_clause, clause_collection, debug=False):
         if isinstance(goal_as_cnf_clause, set):
-            self.goal = list(frozenset(goal_as_cnf_clause))
+            self.goal = [frozenset(goal_as_cnf_clause)]
         elif isinstance(goal_as_cnf_clause, list):
             self.goal = [frozenset(c) for c in goal_as_cnf_clause]
         else:
             raise Exception("I don't know how to handle {}".format(goal_as_cnf_clause))
 
         if isinstance(negated_goal_as_cnf_clause, set):
-            self.negated_goal = list(frozenset(negated_goal_as_cnf_clause))
+            self.negated_goal = [frozenset(negated_goal_as_cnf_clause)]
         elif isinstance(negated_goal_as_cnf_clause, list):
             self.negated_goal = [frozenset(c) for c in negated_goal_as_cnf_clause]
         else:
@@ -109,7 +109,6 @@ class Proof:
         self.attempted_combinations = set()
         self.set_of_support = set()
         [self.set_of_support.add(clause) for clause in self.negated_goal]
-        self.set_of_support.add(frozenset((self.negated_goal)))
         self.at_least_one_goal_containing_clause_exists = False
         self.steps = list()
 
