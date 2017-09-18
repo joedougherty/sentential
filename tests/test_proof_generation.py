@@ -78,3 +78,39 @@ def test_medium_sized_kb_v2():
 
     assert kb.prove() == True
 
+def test_modus_ponens():
+    kb = KnowledgeBase()
+
+    axioms = ['p -> q', 'p']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''q'''))
+
+    assert kb.prove() == True
+
+def test_modus_tollens():
+    kb = KnowledgeBase()
+
+    axioms = ['p -> q', '~q']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''~p'''))
+
+    assert kb.prove() == True
+
+def test_hypothetical_syllogism():
+    kb = KnowledgeBase()
+
+    axioms = ['a -> b', 'b -> c', 'c -> d', 'd -> e', 'e -> f', 'f -> g', 'a']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''g'''))
+    
+    assert kb.prove() == True
+
+def test_affirming_the_consequent():
+    ''' Affirming the consequent should return False '''
+    kb = KnowledgeBase()
+
+    axioms = ['p -> q', 'q']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''p'''))
+
+    assert kb.prove() == False
