@@ -4,20 +4,18 @@ from sentential.KnowledgeBase import KnowledgeBase
 from sentential.Proof import Proof
 from sentential.rewrite_rules import group_cnf, cnf
 
-pq = Proposition('''p v q''')
-pr = Proposition('''p -> r''')
-qr = Proposition('''q -> r''')
-
-# TEST GOALS
-r = Proposition('''r''')
-not_r = Proposition('''!r''')
-
 def test_minimal_kb_proof():
     kb = KnowledgeBase()
+
+    pq = Proposition('''p v q''')
+    pr = Proposition('''p -> r''')
+    qr = Proposition('''q -> r''')
 
     kb.add_axiom(pq)
     kb.add_axiom(pr)
     kb.add_axiom(qr)
+
+    r = Proposition('''r''')
     kb.add_goal(r)
     conclusion = kb.prove()
     assert conclusion == True
