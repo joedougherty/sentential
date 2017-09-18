@@ -57,3 +57,12 @@ def test_another_multiple_goal_clauses():
     kb.add_goal(Proposition('''r'''))
 
     assert kb.prove() == True
+
+def test_medium_sized_kb():
+    kb = KnowledgeBase()
+
+    axioms = ['a', 'b', 'c', '(a & b) -> d', '(b & d) -> f', 'f -> g', '(a & e) -> h', '(a & c) -> e']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''h'''))
+
+    assert kb.prove() == True
