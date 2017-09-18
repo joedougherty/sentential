@@ -141,3 +141,12 @@ def test_implication_distribution():
     kb.add_goal(Proposition('''(p -> q) -> (p -> r)'''))
 
     assert kb.prove() == True
+
+def test_absorption():
+    kb = KnowledgeBase()
+
+    kb.add_axiom(Proposition('''(p -> q)'''))
+    kb.add_axiom(Proposition('''(p -> (p & q))'''))
+    kb.add_goal(Proposition('''(p -> q)'''))
+
+    assert kb.prove() == True
