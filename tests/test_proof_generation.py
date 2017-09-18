@@ -125,3 +125,12 @@ def test_construtive_dilemma():
     kb.add_goal(Proposition('''q v s'''))
 
     assert kb.prove() == True
+
+def test_contraposition_theorem():
+    kb = KnowledgeBase()
+
+    kb.add_axiom(Proposition('''p -> q'''))
+    kb.add_axiom(Proposition('''(~q -> ~p)'''))
+    kb.add_goal(Proposition('''(~q -> ~p)'''))
+
+    assert kb.prove() == True
