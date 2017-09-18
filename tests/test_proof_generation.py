@@ -47,3 +47,13 @@ def test_multiple_goal_clauses():
     kb.add_goal(Proposition('''(p v r) -> (q v s)'''))
 
     assert kb.prove() == True
+
+def test_another_multiple_goal_clauses():
+    kb = KnowledgeBase()
+
+    kb.add_axiom(Proposition('''(p -> q) -> q'''))         
+    kb.add_axiom(Proposition('''(p -> p) -> r'''))   
+    kb.add_axiom(Proposition('''(r -> s) -> ~(s -> q)'''))
+    kb.add_goal(Proposition('''r'''))
+
+    assert kb.prove() == True
