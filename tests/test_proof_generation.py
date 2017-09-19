@@ -150,3 +150,13 @@ def test_absorption():
     kb.add_goal(Proposition('''(p -> q)'''))
 
     assert kb.prove() == True
+
+def test_exercise_5_4():
+    ''' http://intrologic.stanford.edu/exercises/exercise_05_04.html '''
+    kb = KnowledgeBase()
+
+    kb.add_axiom(Proposition('''p -> q'''))
+    kb.add_axiom(Proposition('''r -> s'''))
+    kb.add_goal(Proposition('''(p v r) -> (q v s)'''))
+
+    assert kb.prove() == True

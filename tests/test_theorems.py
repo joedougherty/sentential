@@ -14,3 +14,10 @@ def test_implication_distribution():
 def test_implication_distribution_via_direct_truth_table():
     prop = Proposition('''(p -> (q -> r)) <-> ((p -> q) -> (p -> r))''')
     assert prop.is_theorem() == True
+
+def test_absorption():
+    assert same_truth_table(Proposition('''p -> q'''), Proposition('''p -> (p & q)'''))
+
+def test_absorption_via_direct_truth_table():
+    prop = Proposition('''(p -> q) <-> (p -> (p & q))''')
+    assert prop.is_theorem() == True
