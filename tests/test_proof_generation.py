@@ -207,3 +207,13 @@ def test_lem_and_lnc_imply_one_another():
     kb.add_goal(lnc)
 
     assert kb.prove() == True
+
+
+def test_anything_follows_from_a_contradiction():
+    kb = KnowledgeBase()
+
+    negated_lnc = Proposition('''~(~(p & ~p))''')
+    kb.add_axiom(negated_lnc)
+    kb.add_goal(Proposition('''z'''))
+
+    assert kb.prove() == True

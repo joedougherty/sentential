@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from collections import OrderedDict, namedtuple
+from collections import namedtuple
 from copy import copy, deepcopy
 
-from .Expression import expressify
-from .rewrite_rules import cnf, group_cnf, negate, terms_are_complements
+from .rewrite_rules import group_cnf, negate, terms_are_complements
 
 resolution_result = namedtuple('resolution_result', ['clause', 'resolved_by'])
 
@@ -112,13 +111,13 @@ class Proof:
         self.at_least_one_goal_containing_clause_exists = False
         self.steps = list()
 
-    def resolve(self, c1, c2):
+    def resolve(self, c1,  c2):
         resolvent = resolve(c1, c2)
         self.clause_collection.add(resolvent.clause)
 
         if c1 in self.set_of_support or c2 in self.set_of_support:
             self.set_of_support.add(resolvent.clause)
-           
+
         self.attempted_combinations.add(ResolutionAttempt(c1, c2, resolvent.literal))
 
     def cannot_resolve_further(self):
@@ -146,10 +145,26 @@ class Proof:
                             return True
         return False
 
+
+    def complementary_unit_clauses_exist(self):
+        for pair_of_clauses in minimum_pair_comparisons([c for c in self.clause_collection if len(c) ==1]):
+            c1, c2 = pair_of_clauses
+            potential_literals = would_resolve(c1, c2)
+            if potential_literals:
+                for literal in potential_literals:
+                    resolvent = resolve(c1, c2, resolve_by=literal)
+                    self.clause_collection.add(resolvent.clause)
+                    self.attempted_combinations.add(ResolutionAttempt(c1, c2, literal))
+                    self.steps.append(ResolutionAttempt(c1, c2, literal, resolvent=resolvent.clause))
+                return True
+        return False
+
     def _find(self):
-        if set() in self.clause_collection:
+        if set() in self.clause_collection or frozenset([]) in self.clause_collection:
             return True
         elif self.prove_by_set_of_support():
+            return self._find()
+        elif self.complementary_unit_clauses_exist():
             return self._find()
         elif self.cannot_resolve_further():
             return False
