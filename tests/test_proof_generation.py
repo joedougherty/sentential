@@ -216,4 +216,9 @@ def test_anything_follows_from_a_contradiction():
     kb.add_axiom(negated_lnc)
     kb.add_goal(Proposition('''z'''))
 
-    assert kb.prove() == True
+    kb2 = KnowledgeBase()
+
+    kb2.add_axiom(negated_lnc)
+    kb2.add_goal(Proposition('''~r -> s'''))
+
+    assert (kb.prove() == True and kb2.prove() == True)
