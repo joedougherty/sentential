@@ -40,3 +40,6 @@ AI Overview (general):
 
 Resolution overview (in the first-order case):
 	https://classes.soe.ucsc.edu/cmps290g/Fall09/Papers/Ch12_ResolutionTheoremProving.pdf
+
+Logic workbook:
+	http://www.kpaprzycka.filozofia.uw.edu.pl/Publ/xLogicSelfTaught.html
