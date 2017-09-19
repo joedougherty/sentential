@@ -222,3 +222,13 @@ def test_anything_follows_from_a_contradiction():
     kb2.add_goal(Proposition('''~r -> s'''))
 
     assert (kb.prove() == True and kb2.prove() == True)
+
+
+def test_hypothetical_syllogism_fails_when_conclusion_negated():
+    kb = KnowledgeBase()
+
+    axioms = ['a -> b', 'b -> c', 'c -> d', 'd -> e', 'e -> f', 'f -> g', 'a']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''~g'''))
+
+    assert kb.prove() == False
