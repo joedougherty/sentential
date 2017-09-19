@@ -3,8 +3,6 @@
 from collections import namedtuple
 from copy import copy, deepcopy
 
-from .rewrite_rules import group_cnf, negate, terms_are_complements
-
 resolution_result = namedtuple('resolution_result', ['clause', 'resolved_by'])
 
 class ResolutionAttempt:
@@ -27,6 +25,7 @@ class ResolutionAttempt:
     def __repr__(self):
         return """{{{}, {}}}, resolve_by='{}', resolvent='{}'""".format(self.c1, self.c2, self.resolve_by, self.resolvent)
 
+
 def minimum_pair_comparisons(L):
     if isinstance(L, set):
         L = list(L)
@@ -34,7 +33,7 @@ def minimum_pair_comparisons(L):
     retlist = []
     for idx, item in enumerate(L):
         for element in L[idx+1:]:
-            retlist.append((item,element))
+            retlist.append((item, element))
     return retlist
 
 
@@ -111,21 +110,27 @@ class Proof:
         self.at_least_one_goal_containing_clause_exists = False
         self.steps = list()
 
-    def resolve(self, c1,  c2):
-        resolvent = resolve(c1, c2)
+    def resolve(self, c1,  c2, resolve_by=None):
+        if not resolve_by:
+            resolvent = resolve(c1, c2)
+        else:
+            resolvent = resolve(c1, c2, resolve_by)
+
         self.clause_collection.add(resolvent.clause)
 
         if c1 in self.set_of_support or c2 in self.set_of_support:
             self.set_of_support.add(resolvent.clause)
 
-        self.attempted_combinations.add(ResolutionAttempt(c1, c2, resolvent.literal))
+        self.attempted_combinations.add(ResolutionAttempt(c1, c2, resolvent.resolved_by))
+        self.steps.append(ResolutionAttempt(c1, c2, resolvent.resolved_by, resolvent=resolvent.clause))
 
     def cannot_resolve_further(self):
         for pair_of_clauses in minimum_pair_comparisons(self.clause_collection):
-            potential_resolvents = would_resolve(pair_of_clauses[0], pair_of_clauses[1])
+            c1, c2 = pair_of_clauses
+            potential_resolvents = would_resolve(c1, c2)
             if potential_resolvents:
                 for literal in potential_resolvents:
-                    if ResolutionAttempt(pair_of_clauses[0], pair_of_clauses[1], literal) not in self.attempted_combinations:
+                    if ResolutionAttempt(c1, c2, literal) not in self.attempted_combinations:
                         return False
         return True
 
@@ -137,30 +142,22 @@ class Proof:
                 if potential_resolvents:
                     for literal in potential_resolvents:
                         if ResolutionAttempt(c1, c2, literal) not in self.attempted_combinations:
-                            resolvent = resolve(c1, c2)
-                            self.clause_collection.add(resolvent.clause)
-                            self.set_of_support.add(resolvent.clause)
-                            self.attempted_combinations.add(ResolutionAttempt(c1, c2, literal))
-                            self.steps.append(ResolutionAttempt(c1, c2, literal, resolvent=resolvent.clause))
+                            self.resolve(c1, c2)
                             return True
         return False
 
-
     def complementary_unit_clauses_exist(self):
-        for pair_of_clauses in minimum_pair_comparisons([c for c in self.clause_collection if len(c) ==1]):
+        for pair_of_clauses in minimum_pair_comparisons([c for c in self.clause_collection if len(c) == 1]):
             c1, c2 = pair_of_clauses
             potential_literals = would_resolve(c1, c2)
             if potential_literals:
                 for literal in potential_literals:
-                    resolvent = resolve(c1, c2, resolve_by=literal)
-                    self.clause_collection.add(resolvent.clause)
-                    self.attempted_combinations.add(ResolutionAttempt(c1, c2, literal))
-                    self.steps.append(ResolutionAttempt(c1, c2, literal, resolvent=resolvent.clause))
+                    self.resolve(c1, c2, resolve_by=literal)
                 return True
         return False
 
     def _find(self):
-        if set() in self.clause_collection or frozenset([]) in self.clause_collection:
+        if (set() in self.clause_collection) or (frozenset([]) in self.clause_collection):
             return True
         elif self.prove_by_set_of_support():
             return self._find()
@@ -169,12 +166,12 @@ class Proof:
         elif self.cannot_resolve_further():
             return False
         else:
-            if self.prove_by_set_of_support == False and self.cannot_resolve_further == False:
+            if self.prove_by_set_of_support is False and self.cannot_resolve_further is False:
                 msg = "Evidently, there are still more possible clause combinations, but SOS thinks it is exhausted.\n"
                 msg += "Pretty sure this is not theoretically possible, so now you have an excellent opportunity to \n"
                 msg += "find and patch an important bug!\n"
                 raise Exception(msg)
-            return False
+            return self._find()
 
     def find(self):
         self.conclusion = self._find()

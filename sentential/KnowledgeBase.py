@@ -21,8 +21,8 @@ class KnowledgeBase:
         else:
             cnf_exp = cnf(expressify(axiom_as_prop))
 
-        self._axioms[len(self._axioms)] = {'proposition': axiom_as_prop, 
-                                           'cnf': cnf_exp, 
+        self._axioms[len(self._axioms)] = {'proposition': axiom_as_prop,
+                                           'cnf': cnf_exp,
                                            'clauses': group_cnf(cnf_exp),
                                            'is_goal': axiom_is_goal}
 
@@ -58,12 +58,14 @@ class KnowledgeBase:
 
     def prove(self, goal=None):
         if goal is None:
+            if not hasattr(self, '_goal_as_unit_clause'):
+                raise Exception("You must set a goal before running a proof!")
             goal = self._goal_as_unit_clause
         else:
             self.remove_goal()
             self.add_goal(goal)
 
-        negated_goal = self._negated_goal_as_unit_clause 
+        negated_goal = self._negated_goal_as_unit_clause
         proof_attempt = Proof(goal, negated_goal, self._gather_clauses())
         self.run_proofs.append(proof_attempt)
         return proof_attempt.find()

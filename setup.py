@@ -9,7 +9,7 @@ setup(
         description="A sentential logic interpreter/evaluator.",
         author_email='joseph.dougherty@gmail.com',
         packages=['sentential'],
-        install_requires=['prettytable', 'pytest'],
+        install_requires=['prettytable', 'pytest', 'coverage'],
         package_data={
             '': ['LICENSE', 'NOTICE', '*.rst'],
             },
