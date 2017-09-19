@@ -131,7 +131,7 @@ class Proof:
             if potential_resolvents:
                 for literal in potential_resolvents:
                     if ResolutionAttempt(c1, c2, literal) not in self.attempted_combinations:
-                        return False
+                        self.resolve(c1, c2, literal)
         return True
 
     def prove_by_set_of_support(self):
