@@ -20,6 +20,7 @@ def test_minimal_kb_proof():
     conclusion = kb.prove()
     assert conclusion == True
 
+
 def test_unsatisfiable_clause_collection():
     ''' http://intrologic.stanford.edu/exercises/exercise_05_03.html '''
     goal_as_prop = Proposition('''p v q''')
@@ -35,6 +36,7 @@ def test_unsatisfiable_clause_collection():
     # If a contradiction (empty clause) is found, the set of clauses is unsatisfiable
     assert unsatisfiable.find() == True
 
+
 def test_multiple_goal_clauses():
     kb = KnowledgeBase()
 
@@ -43,6 +45,7 @@ def test_multiple_goal_clauses():
     kb.add_goal(Proposition('''(p v r) -> (q v s)'''))
 
     assert kb.prove() == True
+
 
 def test_another_multiple_goal_clauses():
     kb = KnowledgeBase()
@@ -54,9 +57,9 @@ def test_another_multiple_goal_clauses():
 
     assert kb.prove() == True
 
-''' https://www.ics.uci.edu/~welling/teaching/271fall09/HW6_sol.pdf '''
 
 def test_medium_sized_kb():
+    ''' https://www.ics.uci.edu/~welling/teaching/271fall09/HW6_sol.pdf '''
     kb = KnowledgeBase()
 
     axioms = ['a', 'b', 'c', '(a & b) -> d', '(b & d) -> f', 'f -> g', '(a & e) -> h', '(a & c) -> e']
@@ -65,14 +68,6 @@ def test_medium_sized_kb():
 
     assert kb.prove() == True
 
-def test_medium_sized_kb_v2():
-    kb = KnowledgeBase()
-
-    axioms = ['p -> q', 'e -> b', 'r -> q', '(m & n) -> q', '(a & b) -> p', 'a -> m', 'c -> m', 'd -> n', 'd', 'a']
-    [kb.add_axiom(Proposition(statement)) for statement in axioms]
-    kb.add_goal(Proposition('''q'''))
-
-    assert kb.prove() == True
 
 def test_modus_ponens():
     kb = KnowledgeBase()
@@ -83,6 +78,7 @@ def test_modus_ponens():
 
     assert kb.prove() == True
 
+
 def test_modus_tollens():
     kb = KnowledgeBase()
 
@@ -91,6 +87,7 @@ def test_modus_tollens():
     kb.add_goal(Proposition('''~p'''))
 
     assert kb.prove() == True
+
 
 def test_hypothetical_syllogism():
     kb = KnowledgeBase()
@@ -101,6 +98,7 @@ def test_hypothetical_syllogism():
 
     assert kb.prove() == True
 
+
 def test_affirming_the_consequent():
     ''' Affirming the consequent should return False '''
     kb = KnowledgeBase()
@@ -110,6 +108,7 @@ def test_affirming_the_consequent():
     kb.add_goal(Proposition('''p'''))
 
     assert kb.prove() == False
+
 
 def test_constructive_dilemma():
     '''
@@ -124,6 +123,7 @@ def test_constructive_dilemma():
 
     assert kb.prove() == True
 
+
 def test_contraposition_theorem():
     kb = KnowledgeBase()
 
@@ -131,6 +131,7 @@ def test_contraposition_theorem():
     kb.add_goal(Proposition('''(~q -> ~p)'''))
 
     assert kb.prove() == True
+
 
 def test_implication_distribution():
     kb = KnowledgeBase()
@@ -140,6 +141,7 @@ def test_implication_distribution():
 
     assert kb.prove() == True
 
+
 def test_absorption():
     kb = KnowledgeBase()
 
@@ -148,6 +150,7 @@ def test_absorption():
     kb.add_goal(Proposition('''(p -> q)'''))
 
     assert kb.prove() == True
+
 
 def test_exercise_5_4():
     ''' http://intrologic.stanford.edu/exercises/exercise_05_04.html '''
@@ -159,6 +162,7 @@ def test_exercise_5_4():
 
     assert kb.prove() == True
 
+
 def test_lnc_is_theorem():
     kb = KnowledgeBase()
 
@@ -169,6 +173,7 @@ def test_lnc_is_theorem():
 
     assert kb.prove() == True
 
+
 def test_lem_is_theorem():
     kb = KnowledgeBase()
 
@@ -177,6 +182,7 @@ def test_lem_is_theorem():
     kb.add_goal(lem)
 
     assert kb.prove() == True
+
 
 def test_lnc_conflicts_with_negated_lnc():
     """ You should *not* be able to derive a negation of a theorem (from itself)! """
@@ -189,6 +195,7 @@ def test_lnc_conflicts_with_negated_lnc():
     kb.add_goal(negated_lnc)
 
     assert kb.prove() == False
+
 
 def test_lem_and_lnc_imply_one_another():
     kb = KnowledgeBase()
