@@ -7,12 +7,12 @@ An interpreter for sentential logic (propositional calculus) written in Python.
 Very much a work in progress.
 
 
-	from sentential import Proposition
+	>>> from sentential import Proposition
 
-    law_of_non_contradiction = Proposition('''¬(p & ¬p)''')
+    >>> law_of_non_contradiction = Proposition('''¬(p & ¬p)''')
 
-    law_of_non_contradiction.pretty_truth_table()
-    +-------+-----------+
+    >>> law_of_non_contradiction.pretty_truth_table()
+    -------+-----------+
     | p     | ¬(p & ¬p) |
     +-------+-----------+
     | True  | True      |
