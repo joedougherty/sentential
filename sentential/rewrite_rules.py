@@ -60,11 +60,12 @@ def biconditional_rule(expression):
                   left=Expression(bin_op='v', 
                       left=negate(expr_copy.left), 
                       right=expr_copy.right,
-                      negated=expr_copy.negated),
+                      negated=False),
                   right=Expression(bin_op='v', 
                       left=expr_copy.left, 
                       right=negate(expr_copy.right),
-                      negated=expr_copy.negated))
+                      negated=False),
+                  negated=expr_copy.negated)
 
 
 def implication_rule(expression):

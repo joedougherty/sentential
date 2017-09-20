@@ -45,3 +45,11 @@ def test_prob_4():
 
 def test_prob_5():
     assert group_cnf(cnf(expressify(Proposition('''(p & q) <-> r''')))) == [{'p', '~r'}, {'q', '~r'}, {'r', '~p', '~q'}]
+
+
+def test_biconditional():
+    assert group_cnf(cnf(expressify(Proposition('''c <-> z''')))) == [{'z', '~c'}, {'c', '~z'}]
+
+
+def test_negated_biconditional():
+    assert group_cnf(cnf(expressify(Proposition('''!(c <-> z)''')))) == [{'c', 'z'}, {'~c', '~z'}]
