@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from sentential.Expression import expressify, collect
 from sentential.rewrite_rules import cnf, group_cnf
 from sentential import Proposition

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from sentential import Proposition
 from sentential.Expression import expressify
 from sentential.KnowledgeBase import KnowledgeBase

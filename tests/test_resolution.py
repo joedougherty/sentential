@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import pytest
 
 from sentential.Proof import resolve, would_resolve, resolution_result

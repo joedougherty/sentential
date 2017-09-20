@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from sentential import Proposition
 from sentential.Expression import expressify
 from sentential.KnowledgeBase import KnowledgeBase
@@ -232,4 +234,3 @@ def test_hypothetical_syllogism_fails_when_conclusion_negated():
     kb.add_goal(Proposition('''~g'''))
 
     assert kb.prove() == False
-

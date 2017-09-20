@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from operator import and_, or_, not_
 
 from sentential.evaluator import resolve_term_negation, eval_cell  

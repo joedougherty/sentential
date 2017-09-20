@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from sentential.sentential import same_truth_table
 from sentential import Proposition
 from sentential.rewrite_rules import group_cnf, cnf
