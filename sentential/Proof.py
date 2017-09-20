@@ -166,7 +166,7 @@ class Proof:
         elif self.cannot_resolve_further():
             return False
         else:
-            if self.prove_by_set_of_support is False and self.cannot_resolve_further is False:
+            if self.cannot_resolve_further is False:
                 msg = "Evidently, there are still more possible clause combinations, but SOS thinks it is exhausted.\n"
                 msg += "Pretty sure this is not theoretically possible, so now you have an excellent opportunity to \n"
                 msg += "find and patch an important bug!\n"

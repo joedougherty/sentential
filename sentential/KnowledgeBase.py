@@ -35,8 +35,8 @@ class KnowledgeBase:
 
         self.add_axiom(goal_as_prop, axiom_is_goal=True)
         self._goal = goal_as_prop
-        self._goal_as_unit_clause = group_cnf(cnf(expressify(goal_as_prop)))[0]
-        self._negated_goal_as_unit_clause = group_cnf(cnf(negate(expressify(goal_as_prop))))[0]
+        self._goal_as_unit_clause = group_cnf(cnf(expressify(goal_as_prop)))
+        self._negated_goal_as_unit_clause = group_cnf(cnf(negate(expressify(goal_as_prop))))
 
     def remove_goal(self):
         self._goal, self._goal_as_unit_clause, self._negated_goal_as_unit_clause = None, None, None
