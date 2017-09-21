@@ -56,7 +56,7 @@ class KnowledgeBase:
         else:
             raise Exception("Run a proof first!")
 
-    def prove(self, goal=None):
+    def prove(self, goal=None, return_proof=False):
         if goal is None:
             if not hasattr(self, '_goal_as_unit_clause'):
                 raise Exception("You must set a goal before running a proof!")
@@ -68,4 +68,14 @@ class KnowledgeBase:
         negated_goal = self._negated_goal_as_unit_clause
         proof_attempt = Proof(goal, negated_goal, self._gather_clauses())
         self.run_proofs.append(proof_attempt)
-        return proof_attempt.find()
+
+        if return_proof:
+            return proof_attempt
+
+        try:
+            return proof_attempt.find()
+        except Exception as e:
+            print(e)
+            print('Clause Collection: {}'.format(proof_attempt.clause_collection))
+            print('Set of Support: {}'.format(proof_attempt.set_of_support))
+            return proof_attempt
