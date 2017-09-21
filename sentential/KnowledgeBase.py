@@ -73,7 +73,7 @@ class KnowledgeBase:
             return proof_attempt
 
         try:
-            return proof_attempt.find()
+            return proof_attempt.find(trace=True)
         except Exception as e:
             print(e)
             print('Clause Collection: {}'.format(proof_attempt.clause_collection))

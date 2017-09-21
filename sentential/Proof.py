@@ -110,6 +110,8 @@ class Proof:
         self.at_least_one_goal_containing_clause_exists = False
         self.steps = list()
 
+        self.find_trace = list()
+
     def resolve(self, c1,  c2, resolve_by=None):
         if not resolve_by:
             resolvent = resolve(c1, c2)
@@ -142,7 +144,7 @@ class Proof:
                 if potential_resolvents:
                     for literal in potential_resolvents:
                         if ResolutionAttempt(c1, c2, literal) not in self.attempted_combinations:
-                            self.resolve(c1, c2)
+                            self.resolve(c1, c2, resolve_by=literal)
                             return True
         return False
 
@@ -165,14 +167,22 @@ class Proof:
                     if ResolutionAttempt(c1, c2, literal) not in self.attempted_combinations:
                         self.resolve(c1, c2)
 
-    def _find(self):
+    def _find(self, trace=False):
         if (set() in self.clause_collection) or (frozenset([]) in self.clause_collection):
+            if trace:
+                self.find_trace.append('Found []! Returning True.')
             return True
         elif self.prove_by_set_of_support():
-            return self._find()
+            if trace:
+                self.find_trace.append('Proof by support retured True.')
+            return self._find(trace=trace)
         elif self.complementary_unit_clauses_exist():
-            return self._find()
+            if trace:
+                self.find_trace.append('complementary unit clauses exist returned True')
+            return self._find(trace=trace)
         elif self.cannot_resolve_further():
+            if trace:
+                self.find_trace.append('Cannot resolve further returned True')
             return False
         else:
             if self.cannot_resolve_further() == False:
@@ -181,9 +191,11 @@ class Proof:
                 msg += "find and patch an important bug!\n"
                 raise Exception(msg)
 
+            self.find_trace.append('Calling brute force search...')
             self.brute_force_find()
+            self.find_trace.append('Brute force search complete!')
             return self._find()
 
-    def find(self):
-        self.conclusion = self._find()
+    def find(self, trace=False):
+        self.conclusion = self._find(trace=True)
         return self.conclusion
