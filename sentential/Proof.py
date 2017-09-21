@@ -156,6 +156,15 @@ class Proof:
                 return True
         return False
 
+    def brute_force_find(self):
+        for pair_of_clauses in minimum_pair_comparisons(sorted(self.clause_collection, key=lambda x: len(x))):
+            c1, c2 = pair_of_clauses
+            potential_resolvents = would_resolve(c1, c2)
+            if potential_resolvents:
+                for literal in potential_resolvents:
+                    if ResolutionAttempt(c1, c2, literal) not in self.attempted_combinations:
+                        self.resolve(c1, c2)
+
     def _find(self):
         if (set() in self.clause_collection) or (frozenset([]) in self.clause_collection):
             return True
@@ -166,11 +175,13 @@ class Proof:
         elif self.cannot_resolve_further():
             return False
         else:
-            if self.cannot_resolve_further is False:
+            if self.cannot_resolve_further() == False:
                 msg = "Evidently, there are still more possible clause combinations, but SOS thinks it is exhausted.\n"
                 msg += "Pretty sure this is not theoretically possible, so now you have an excellent opportunity to \n"
                 msg += "find and patch an important bug!\n"
                 raise Exception(msg)
+
+            self.brute_force_find()
             return self._find()
 
     def find(self):
