@@ -8,6 +8,12 @@ def test_tautologies_dont_resolve_with_themselves():
     c1, c2 = frozenset({'p', '~p'}), frozenset({'~p', 'p'})
     assert would_resolve(c1, c2) == False
 
+
+def test_tautologies_are_problematic_generally():
+    c1, c2 = frozenset({'p'}), frozenset({'p', '~p'})
+    assert would_resolve(c1, c2) == False
+
+
 ''' http://intrologic.stanford.edu/exercises/exercise_05_02.html '''
 
 
@@ -36,6 +42,9 @@ def test_prob_4():
     #   c1 = {'q', 'r', '~p'}
     #   c2 = {'p', '~q', '~r'}
     c1, c2 = {'q', 'r', '~p'}, {'p', '~q', '~r'}
+
+    assert not isinstance(would_resolve(c1, c2), bool)
+
     resolution_possibilities = [resolve(c1, c2, resolve_by=literal) for literal in would_resolve(c1, c2)]
 
     generated_possibilities = [resolution_result(clause=frozenset({'~q', 'q', 'p', '~p'}), resolved_by='r'),

@@ -208,6 +208,8 @@ def terms_are_complements(t1, t2):
 
 def clause_is_tautology(clause):
     clause_copy = deepcopy(clause)
+    if isinstance(clause_copy, frozenset):
+        clause_copy = set(clause_copy)
     return len(clause_copy) == 2 and (terms_are_complements(clause_copy.pop(), clause_copy.pop()))
 
 

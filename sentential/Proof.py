@@ -3,6 +3,8 @@
 from collections import namedtuple
 from copy import copy, deepcopy
 
+from .rewrite_rules import clause_is_tautology
+
 resolution_result = namedtuple('resolution_result', ['clause', 'resolved_by'])
 
 class ResolutionAttempt:
@@ -46,6 +48,16 @@ def negate_literal(literal):
 def would_resolve(c1, c2):
     if c1 == c2:
         return False
+
+    c1, c2 = set(deepcopy(c1)), set(deepcopy(c2))
+    naive_combined_clause = deepcopy(c1)
+    naive_combined_clause.update(c2)
+
+    if not len(naive_combined_clause) > max(len(c1), len(c2)):
+        return False
+
+    
+
 
     literals_to_resolve_by = []
     for literal in c1:
@@ -118,10 +130,11 @@ class Proof:
         else:
             resolvent = resolve(c1, c2, resolve_by)
 
-        self.clause_collection.add(resolvent.clause)
+        if not clause_is_tautology(resolvent.clause):
+            self.clause_collection.add(resolvent.clause)
 
-        if c1 in self.set_of_support or c2 in self.set_of_support:
-            self.set_of_support.add(resolvent.clause)
+            if c1 in self.set_of_support or c2 in self.set_of_support:
+                self.set_of_support.add(resolvent.clause)
 
         self.attempted_combinations.add(ResolutionAttempt(c1, c2, resolvent.resolved_by))
         self.steps.append(ResolutionAttempt(c1, c2, resolvent.resolved_by, resolvent=resolvent.clause))
@@ -174,7 +187,7 @@ class Proof:
             return True
         elif self.prove_by_set_of_support():
             if trace:
-                self.find_trace.append('Proof by support retured True.')
+                self.find_trace.append('Proof by support returned True.')
             return self._find(trace=trace)
         elif self.complementary_unit_clauses_exist():
             if trace:

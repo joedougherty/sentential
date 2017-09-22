@@ -53,3 +53,13 @@ def test_constructive_dilemma():
     kb.add_goal(Proposition('''~(b v d)'''))
 
     assert kb.prove() == False
+
+
+def test_biconditional_introduction():
+    kb = KnowledgeBase()
+
+    axioms = ['e -> f', 'f -> e']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''!(e <-> f)'''))
+
+    assert kb.prove() == False
