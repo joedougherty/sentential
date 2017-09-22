@@ -45,7 +45,7 @@ def test_disjunctive_syllogism_unsat_v2():
     assert kb.prove() == False
 
 
-def test_constructive_dilemma():
+def test_constructive_dilemma_unsat():
     kb = KnowledgeBase()
 
     axioms = ['a -> b', 'c -> d', 'a v c']
@@ -55,11 +55,31 @@ def test_constructive_dilemma():
     assert kb.prove() == False
 
 
-def test_biconditional_introduction():
+def test_biconditional_introduction_unsat():
     kb = KnowledgeBase()
 
     axioms = ['e -> f', 'f -> e']
     [kb.add_axiom(Proposition(statement)) for statement in axioms]
     kb.add_goal(Proposition('''!(e <-> f)'''))
+
+    assert kb.prove() == False
+
+
+def test_biconditional_elimination_unsat_v1():
+    kb = KnowledgeBase()
+
+    axioms = ['p = q', 'p']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''~q'''))
+
+    assert kb.prove() == False
+
+
+def test_biconditional_elimination_unsat_v1():
+    kb = KnowledgeBase()
+
+    axioms = ['p = q', 'q']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''~p'''))
 
     assert kb.prove() == False

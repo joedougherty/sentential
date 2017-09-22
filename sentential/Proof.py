@@ -56,9 +56,6 @@ def would_resolve(c1, c2):
     if not len(naive_combined_clause) > max(len(c1), len(c2)):
         return False
 
-    
-
-
     literals_to_resolve_by = []
     for literal in c1:
         if negate_literal(literal) in c2:
