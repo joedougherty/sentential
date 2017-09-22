@@ -75,50 +75,11 @@ def test_biconditional_elimination_unsat_v1():
     assert kb.prove() == False
 
 
-def test_biconditional_elimination_unsat_v2():
+def test_biconditional_elimination_unsat_v1():
     kb = KnowledgeBase()
 
     axioms = ['p = q', 'q']
     [kb.add_axiom(Proposition(statement)) for statement in axioms]
     kb.add_goal(Proposition('''~p'''))
-
-    assert kb.prove() == False
-
-
-def test_biconditional_elimination_v3():
-    kb = KnowledgeBase()
-
-    axioms = ['p = q', '!p']
-    [kb.add_axiom(Proposition(statement)) for statement in axioms]
-    kb.add_goal(Proposition('''!(~q)'''))
-
-    assert kb.prove() == False
-
-
-def test_biconditional_elimination_v4():
-    kb = KnowledgeBase()
-
-    axioms = ['p = q', '¬q']
-    [kb.add_axiom(Proposition(statement)) for statement in axioms]
-    kb.add_goal(Proposition('''!!p'''))
-
-    assert kb.prove() == False
-
-def test_biconditional_elimination_v5():
-    kb = KnowledgeBase()
-
-    axioms = ['j <-> r', 'r v j']
-    [kb.add_axiom(Proposition(statement)) for statement in axioms]
-    kb.add_goal(Proposition('''!(r & j)'''))
-
-    assert kb.prove() == False
-
-
-def test_biconditional_elimination_v6():
-    kb = KnowledgeBase()
-
-    axioms = ['j <-> r', '~r v ~j']
-    [kb.add_axiom(Proposition(statement)) for statement in axioms]
-    kb.add_goal(Proposition('''!(~r & ~j)'''))
 
     assert kb.prove() == False
