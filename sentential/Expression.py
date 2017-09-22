@@ -107,6 +107,28 @@ def expressify(proposition):
     return _treeify(prop)
 
 
+def ast_copy_is_term(t):
+    term_copy = deepcopy(t)
+    new_term = collect(term_copy)
+    if isinstance(new_term, Term):
+        return new_term
+    return False
+
+
+def ast_is_just_a_term(ast):
+    ast_copy = deepcopy(ast)
+
+    if len(ast_copy) == 0:
+        return False
+
+    if is_variable(ast_copy.pop()):
+        item = ast_copy.pop()
+        if not is_negation(item):
+            return False
+
+    return True
+
+
 def _treeify(ast, next_negation=None, previous_level_was_negated=False):
     """
     Convert nested-list AST into a tree.
@@ -126,6 +148,11 @@ def _treeify(ast, next_negation=None, previous_level_was_negated=False):
         if isinstance(left_term, Term):
             return Expression(bin_op=None, 
                     left=left_term, 
+                    right=None, 
+                    negated=preceding_negation)
+        elif ast_is_just_a_term(left_term):
+            return Expression(bin_op=None, 
+                    left=collect(left_term), 
                     right=None, 
                     negated=preceding_negation)
         else: # The negation needs to get passed to the subsequent call to _treeify 
