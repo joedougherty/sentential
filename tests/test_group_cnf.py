@@ -49,9 +49,17 @@ def test_prob_5():
     assert group_cnf(cnf(expressify(Proposition('''(p & q) <-> r''')))) == [{'p', '~r'}, {'q', '~r'}, {'r', '~p', '~q'}]
 
 
+def test_conditional():
+    assert group_cnf(cnf(expressify(Proposition('''p -> q''')))) == [{'~p', 'q'}]
+
+
 def test_biconditional():
     assert group_cnf(cnf(expressify(Proposition('''c <-> z''')))) == [{'z', '~c'}, {'c', '~z'}]
 
 
 def test_negated_biconditional():
     assert group_cnf(cnf(expressify(Proposition('''!(c <-> z)''')))) == [{'c', 'z'}, {'~c', '~z'}]
+
+
+def test_disjunction_and_implication_combined():
+    assert group_cnf(cnf(expressify(Proposition('''(p -> q) v (r -> s)''')))) == [{'q', 's', '~p', '~r'}]
