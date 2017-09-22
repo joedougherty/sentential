@@ -97,7 +97,7 @@ def test_biconditional_elimination_unsat_v4():
 
     axioms = ['p = q', '¬q']
     [kb.add_axiom(Proposition(statement)) for statement in axioms]
-    kb.add_goal(Proposition('''p'''))
+    kb.add_goal(Proposition('''!(!p)'''))
 
     assert kb.prove() == False
 
