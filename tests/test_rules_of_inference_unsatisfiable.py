@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from sentential import Proposition
-from sentential.Expression import expressify
 from sentential.KnowledgeBase import KnowledgeBase
-from sentential.Proof import Proof
-from sentential.rewrite_rules import group_cnf, cnf
 
 '''
 Think of this as the complement to test_rules_of_inference.
@@ -91,5 +88,35 @@ def test_biconditional_elimination_unsat_v3():
     axioms = ['p = q', '!p']
     [kb.add_axiom(Proposition(statement)) for statement in axioms]
     kb.add_goal(Proposition('''q'''))
+
+    assert kb.prove() == False
+
+
+def test_biconditional_elimination_unsat_v4():
+    kb = KnowledgeBase()
+
+    axioms = ['p = q', '¬q']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''p'''))
+
+    assert kb.prove() == False
+
+
+def test_biconditional_elimination_unsat_v5():
+    kb = KnowledgeBase()
+
+    axioms = ['j <-> r', 'r v j']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''!(r & j)'''))
+
+    assert kb.prove() == False
+
+
+def test_biconditional_elimination_unsat_v6():
+    kb = KnowledgeBase()
+
+    axioms = ['j <-> r', '~r v ~j']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''!(~r & ~j)'''))
 
     assert kb.prove() == False
