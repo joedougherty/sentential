@@ -6,11 +6,11 @@ from sentential.KnowledgeBase import KnowledgeBase
 from sentential.Proof import Proof
 from sentential.rewrite_rules import group_cnf, cnf
 
-''' 
+'''
 Think of this as the complement to test_rules_of_inference.
 
 Where test_rules_of_inference verifies that a set of axioms
-can produce a proof for a known rule of inference, 
+can produce a proof for a known rule of inference,
 test_rules_of_inference_unsatisfiable tests cases that *should not*
 be provable.
 '''
@@ -75,11 +75,21 @@ def test_biconditional_elimination_unsat_v1():
     assert kb.prove() == False
 
 
-def test_biconditional_elimination_unsat_v1():
+def test_biconditional_elimination_unsat_v2():
     kb = KnowledgeBase()
 
     axioms = ['p = q', 'q']
     [kb.add_axiom(Proposition(statement)) for statement in axioms]
     kb.add_goal(Proposition('''~p'''))
+
+    assert kb.prove() == False
+
+
+def test_biconditional_elimination_unsat_v3():
+    kb = KnowledgeBase()
+
+    axioms = ['p = q', '!p']
+    [kb.add_axiom(Proposition(statement)) for statement in axioms]
+    kb.add_goal(Proposition('''q'''))
 
     assert kb.prove() == False
