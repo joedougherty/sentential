@@ -136,16 +136,6 @@ class Proof:
         self.attempted_combinations.add(ResolutionAttempt(c1, c2, resolvent.resolved_by))
         self.steps.append(ResolutionAttempt(c1, c2, resolvent.resolved_by, resolvent=resolvent.clause))
 
-    def cannot_resolve_further(self):
-        for pair_of_clauses in minimum_pair_comparisons(self.clause_collection):
-            c1, c2 = pair_of_clauses
-            potential_resolvents = would_resolve(c1, c2)
-            if potential_resolvents:
-                for literal in potential_resolvents:
-                    if ResolutionAttempt(c1, c2, literal) not in self.attempted_combinations:
-                        self.resolve(c1, c2, literal)
-        return True
-
     def prove_by_set_of_support(self):
         for clause in sorted(self.set_of_support, key=lambda x: len(x)):
             for new_clause in sorted(self.clause_collection, key=lambda x: len(x)):
@@ -156,16 +146,6 @@ class Proof:
                         if ResolutionAttempt(c1, c2, literal) not in self.attempted_combinations:
                             self.resolve(c1, c2, resolve_by=literal)
                             return True
-        return False
-
-    def complementary_unit_clauses_exist(self):
-        for pair_of_clauses in minimum_pair_comparisons([c for c in self.clause_collection if len(c) == 1]):
-            c1, c2 = pair_of_clauses
-            potential_literals = would_resolve(c1, c2)
-            if potential_literals:
-                for literal in potential_literals:
-                    self.resolve(c1, c2, resolve_by=literal)
-                return True
         return False
 
     def brute_force_find(self):
@@ -186,25 +166,18 @@ class Proof:
             if trace:
                 self.find_trace.append('Proof by support returned True.')
             return self._find(trace=trace)
-        elif self.complementary_unit_clauses_exist():
-            if trace:
-                self.find_trace.append('complementary unit clauses exist returned True')
-            return self._find(trace=trace)
-        elif self.cannot_resolve_further():
-            if trace:
-                self.find_trace.append('Cannot resolve further returned True')
-            return False
-        else:
-            if self.cannot_resolve_further() == False:
-                msg = "Evidently, there are still more possible clause combinations, but SOS thinks it is exhausted.\n"
-                msg += "Pretty sure this is not theoretically possible, so now you have an excellent opportunity to \n"
-                msg += "find and patch an important bug!\n"
-                raise Exception(msg)
-
+        else: 
             self.find_trace.append('Calling brute force search...')
             self.brute_force_find()
             self.find_trace.append('Brute force search complete!')
-            return self._find()
+            if (set() in self.clause_collection) or (frozenset([]) in self.clause_collection):
+                if trace:
+                    self.find_trace.append('Found []! Returning True.')
+                return True
+            else:
+                if trace:
+                    self.find_trace.append('Exhausted all possible combinations. Could not find a proof!')
+                return False
 
     def find(self, trace=False):
         self.conclusion = self._find(trace=True)
