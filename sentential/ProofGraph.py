@@ -16,7 +16,13 @@ class ProofGraph:
         self._steps_shadow.reverse()
         self.reverse_steps = self._steps_shadow
         self.nodes, self.edges = list(), list()
-        self.node_names = (x for x in string.ascii_uppercase)
+
+        potential_node_names = list()
+        for letter in string.ascii_lowercase:
+            for num in range(0,10):
+                potential_node_names.append('{}{}'.format(letter, num))
+
+        self.node_names = (x for x in potential_node_names)
 
     def _get_resolvent_node_id(self, resolvent):
         for n in self.nodes:
