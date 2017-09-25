@@ -3,6 +3,7 @@ import string
 
 from graphviz import Digraph
 
+
 def stringify_clause(c):
     if c == set() or c == frozenset():
         return '{}'
@@ -15,11 +16,11 @@ class ProofGraph:
         self._steps_shadow = copy(self.steps)
         self._steps_shadow.reverse()
         self.reverse_steps = self._steps_shadow
-        self.nodes, self.edges = list(), list()
+        self.nodes, self.edge_pairs = list(), list()
 
         potential_node_names = list()
         for letter in string.ascii_lowercase:
-            for num in range(0,10):
+            for num in range(0, 10):
                 potential_node_names.append('{}{}'.format(letter, num))
 
         self.node_names = (x for x in potential_node_names)
@@ -47,8 +48,8 @@ class ProofGraph:
         else:
             target_node = current_clause
 
-        self.edges.append('{}{}'.format(gen_node_names[0], target_node))
-        self.edges.append('{}{}'.format(gen_node_names[1], target_node))
+        self.edge_pairs.append((gen_node_names[0], target_node))
+        self.edge_pairs.append((gen_node_names[1], target_node))
 
     def find_parents(self, s):
         for clause in (s.c1, s.c2):
@@ -67,6 +68,6 @@ class ProofGraph:
         dot = Digraph()
 
         [dot.node(node['name'], node['rep']) for node in self.nodes]
-        dot.edges([edge_pair for edge_pair in self.edges])
+        [dot.edge(e[0], e[1]) for e in self.edge_pairs]
 
         return dot

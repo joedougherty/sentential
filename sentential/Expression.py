@@ -7,12 +7,12 @@ from copy import deepcopy
 from operator import not_
 
 from .Proposition import Proposition
-from .utils import list_is_nested
 
 """
 Provides models and tools for converting a nested list AST
 into a tree model (given by Expression) and vice versa.
 """
+
 
 class Term:
     """
@@ -99,6 +99,7 @@ def collect(ast):
         return Term(ast.pop(0), negated=negated)
     return negated
 
+
 def neither_negation_nor_variable(t):
     return (not is_negation(t)) and (not is_variable(t))
 
@@ -110,6 +111,7 @@ def ast_is_a_term(ast):
         if neither_negation_nor_variable(item):
             return False
     return True
+
 
 def expressify(proposition):
     prop = deepcopy(proposition)
@@ -144,7 +146,7 @@ def _treeify(ast, next_negation=None, previous_level_was_negated=False):
                     left=collect(left_term),
                     right=None,
                     negated=preceding_negation)
-        else: # The negation needs to get passed to the subsequent call to _treeify
+        else:  # The negation needs to get passed to the subsequent call to _treeify
             return Expression(bin_op=None,
                     left=_treeify(left_term, previous_level_was_negated=preceding_negation),
                     right=None,
