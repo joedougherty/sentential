@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from collections import OrderedDict, namedtuple
-from copy import copy, deepcopy
+from collections import OrderedDict
 
 from .Expression import expressify
 from .Proof import Proof
+from .ProofGraph import ProofGraph
 from .Proposition import Proposition
-from .rewrite_rules import cnf, group_cnf, negate, terms_are_complements
+from .rewrite_rules import cnf, group_cnf, negate
 
 
 class KnowledgeBase:
@@ -79,3 +79,14 @@ class KnowledgeBase:
             print('Clause Collection: {}'.format(proof_attempt.clause_collection))
             print('Set of Support: {}'.format(proof_attempt.set_of_support))
             return proof_attempt
+
+    def visualize(self, steps=None):
+        if steps is None:
+            s = self.most_recent_proof().steps
+        else:
+            s = steps
+
+        pg = ProofGraph(s)
+        dot = pg.generate()
+
+        dot.view()
