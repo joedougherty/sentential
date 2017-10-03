@@ -107,6 +107,12 @@ class Proposition:
                 return False
         return True
 
+    def is_contradiction(self):
+        for tv_dict in self.truth_table():
+            if tv_dict['expr_truth_value'] == True:
+                return False
+        return True
+
     def eval_expr_with_custom_var_vals(self, truth_values_as_dict):
         return derive_truth_value(self.expr, truth_values_as_dict)
 

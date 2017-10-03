@@ -3,6 +3,7 @@
 from sentential.sentential import same_truth_table
 from sentential import Proposition
 
+
 def test_contraposition_theorem():
     assert same_truth_table(Proposition('''(p -> q)'''), Proposition('''(~q -> ~p)'''))
 
