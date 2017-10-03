@@ -6,11 +6,17 @@ SENTENTIAL
 
 An interpreter for sentential logic (propositional calculus) written in Python.
 
-	>>> from sentential import Proposition
+sentential can help you:
 
-    >>> law_of_non_contradiction = Proposition('''¬(p & ¬p)''')
+    * Generate truth tables
 
-    >>> law_of_non_contradiction.pretty_truth_table()
+.. code-block:: python
+
+	from sentential import Proposition
+
+    law_of_non_contradiction = Proposition('''¬(p & ¬p)''')
+
+    law_of_non_contradiction.pretty_truth_table()
     -------+-----------+
     | p     | ¬(p & ¬p) |
     +-------+-----------+
@@ -19,11 +25,15 @@ An interpreter for sentential logic (propositional calculus) written in Python.
     +-------+-----------+
 
 	# Inspect the internal representation
-    >>> law_of_non_contradiction.truth_table()
+    law_of_non_contradiction.truth_table()
+    
     [OrderedDict([('p', True), ('expr_truth_value', True)]),
      OrderedDict([('p', False), ('expr_truth_value', True)])]
 
-    >>> law_of_non_contradiction.is_theorem()
+
+    * Determine if a proposition is a theorem/contradiction
+
+    law_of_non_contradiction.is_theorem()
     True
 
 	# Propositions can be combined with standard string operators
