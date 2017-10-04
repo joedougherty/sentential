@@ -28,6 +28,7 @@ An interpreter for sentential logic (propositional calculus) written in Python.
 +-------+-----------+
 
 
+
 .. code-block:: python
     # Propositions can be combined with standard string operators
     law_of_non_contradiction = Proposition('''¬(p & ¬p)''')
