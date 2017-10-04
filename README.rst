@@ -30,6 +30,7 @@ An interpreter for sentential logic (propositional calculus) written in Python.
 
 
 .. code-block:: python
+
     # Propositions can be combined with standard string operators
     law_of_non_contradiction = Proposition('''¬(p & ¬p)''')
     law_of_excluded_middle = Proposition('''(p v ¬p)''')
@@ -61,13 +62,11 @@ An interpreter for sentential logic (propositional calculus) written in Python.
 
 .. code-block:: python
 
-    law_of_non_contradiction.is_theorem()
-    True
+    law_of_non_contradiction.is_theorem() # True
 
     negated_lnc = Proposition('''¬(¬(p & ¬p))''')
 
-    negated_lnc.is_contradiction()
-    True
+    negated_lnc.is_contradiction() # True
 
 **sentential** can also help you find proofs (by resolution).
 
@@ -78,7 +77,8 @@ An interpreter for sentential logic (propositional calculus) written in Python.
 
     kb = KnowledgeBase()
 
-    # Let's verify that we can run a proof using `hypothetical syllogism <https://en.wikipedia.org/wiki/Hypothetical_syllogism>`:
+    # Let's verify that we can run a proof using hypothetical syllogism 
+    # (https://en.wikipedia.org/wiki/Hypothetical_syllogism)
     kb.add_axiom(Proposition('''a -> b'''))
     kb.add_axiom(Proposition('''b -> c'''))
     kb.add_axiom(Proposition('''c -> d'''))
@@ -89,5 +89,4 @@ An interpreter for sentential logic (propositional calculus) written in Python.
     # Can we prove that "d" is true given what we know above?
     kb.add_goal(Proposition('''d'''))
 
-    kb.prove()
-    True
+    kb.prove() # True
