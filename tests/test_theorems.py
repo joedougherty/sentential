@@ -29,3 +29,10 @@ def test_absorption():
 def test_absorption_via_direct_truth_table():
     prop = Proposition('''(p -> q) <-> (p -> (p & q))''')
     assert prop.is_theorem() == True
+
+
+def test_the_nature_of_bivalence_README_example():
+    lnc = Proposition('''¬(p & ¬p)''')
+    lem = Proposition('''(p v ¬p)''')
+    the_nature_of_bivalence = Proposition('{} <-> {}'.format(lnc, lem))
+    assert the_nature_of_bivalence.is_theorem() == True
