@@ -35,7 +35,7 @@ An interpreter for sentential logic (propositional calculus) written in Python.
     law_of_non_contradiction = Proposition('''¬(p & ¬p)''')
     law_of_excluded_middle = Proposition('''(p v ¬p)''')
 
-    the_nature_of_bivalence = Proposition('{} <-> {}'.format(law_of_non_contradiction.expr, law_of_excluded_middle.expr))
+    the_nature_of_bivalence = Proposition('{} <-> {}'.format(lnc, lem))
 
     the_nature_of_bivalence.pretty_truth_table()
 
