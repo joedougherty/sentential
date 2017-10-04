@@ -6,7 +6,7 @@ SENTENTIAL
 
 An interpreter for sentential logic (propositional calculus) written in Python.
 
-*Very much a work in progress.*
+*A work in progress.*
 
 **sentential** can help you:
 
