@@ -17,12 +17,12 @@ An interpreter for sentential logic (propositional calculus) written in Python.
     law_of_non_contradiction.pretty_truth_table()
     
 
-+-------+-----------+
-| p     | ¬(p & ¬p) |
-+-------+-----------+
-| True  | True      |
-| False | True      |
-+-------+-----------+
+``+-------+-----------+``
+``| p     | ¬(p & ¬p) |``
+``+-------+-----------+``
+``| True  | True      |``
+``| False | True      |``
+``+-------+-----------+``
 
 
 .. code-block:: python
