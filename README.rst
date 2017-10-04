@@ -70,6 +70,19 @@ An interpreter for sentential logic (propositional calculus) written in Python.
 
     negated_lnc.is_contradiction() # True
 
+
++ Find the CNF (Conjunctive Normal Form) expression of a proposition
+
+.. code-block:: python
+    
+    from sentential import Proposition
+    from sentential.Expression import expressify
+    from sentential.rewrite_rules import group_cnf, cnf
+
+    group_cnf(cnf(expressify(Proposition('''((p and w) -> !e)''')))) # [{'~e', '~p', '~w'}]
+
+**Note**: This API will be improved in future versions.
+
 **sentential** can also help you find proofs (by resolution).
 
 .. code-block:: python
@@ -109,6 +122,9 @@ Proofs can be inspected further...
 
 
 .. image:: assets/generated_proof.png
+
+
++ 
 
 
 SYNTAX
@@ -169,3 +185,6 @@ Example:
     '''(p & q & r)'''   # Three terms: ("p","q","r")    | Two binary operators      | Exception!
 
 While it may occasionally be inconvenient to nest expressions with shared operators, this provides unambiguous grouping rules. What you lose in convenience, you gain in semantic precision.
+
+The last example can be legally expressed in this way: ``Proposition('''((p & q) & r)''')``
+
