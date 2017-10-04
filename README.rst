@@ -18,10 +18,15 @@ An interpreter for sentential logic (propositional calculus) written in Python.
     
 
 ``+-------+-----------+``
+
 ``| p     | ¬(p & ¬p) |``
+
 ``+-------+-----------+``
+
 ``| True  | True      |``
+
 ``| False | True      |``
+
 ``+-------+-----------+``
 
 
