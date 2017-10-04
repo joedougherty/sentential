@@ -96,6 +96,14 @@ Proofs can be inspected further...
 
 .. code-block:: python
 
-    proof = kb.prove(return_proof=True)
+    proof = kb.most_recent_proof()
+
+    # Inspect the proof steps taken to arrive at the empty clause
+    proof.steps
+
+    # If you have graphviz installed, you can try generating
+    # an image demonstating the proof as a graph
+    proof.visualize()
 
 
+.. image:: assets/generated_proof.png
