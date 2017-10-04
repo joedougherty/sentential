@@ -3,6 +3,7 @@
 from collections import namedtuple
 from copy import copy, deepcopy
 
+from .ProofGraph import ProofGraph
 from .rewrite_rules import clause_is_tautology
 
 resolution_result = namedtuple('resolution_result', ['clause', 'resolved_by'])
@@ -182,3 +183,15 @@ class Proof:
     def find(self, trace=False):
         self.conclusion = self._find(trace=True)
         return self.conclusion
+
+    def visualize(self):
+        if self.steps is None:
+            msg = "This proof has no steps! Has it been run? Call .find() on this instance to try to find a proof."
+            raise Exception(msg)
+        else:
+            s = self.steps
+
+        pg = ProofGraph(s)
+        dot = pg.generate()
+
+        dot.view()

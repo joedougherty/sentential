@@ -80,13 +80,3 @@ class KnowledgeBase:
             print('Set of Support: {}'.format(proof_attempt.set_of_support))
             return proof_attempt
 
-    def visualize(self, steps=None):
-        if steps is None:
-            s = self.most_recent_proof().steps
-        else:
-            s = steps
-
-        pg = ProofGraph(s)
-        dot = pg.generate()
-
-        dot.view()

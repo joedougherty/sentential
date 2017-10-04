@@ -86,7 +86,16 @@ An interpreter for sentential logic (propositional calculus) written in Python.
     # Let's say we know it's the case that "a"
     kb.add_axiom(Proposition('''a'''))
 
-    # Can we prove that "d" is true given what we know above?
+    # Can we construct a proof that "d" is true (given what we know above)?
     kb.add_goal(Proposition('''d'''))
 
+    # Indeed we can. A proof was found!
     kb.prove() # True
+
+Proofs can be inspected further...
+
+.. code-block:: python
+
+    proof = kb.prove(return_proof=True)
+
+
