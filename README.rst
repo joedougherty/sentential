@@ -6,6 +6,8 @@ SENTENTIAL
 
 An interpreter for sentential logic (propositional calculus) written in Python.
 
+*Very much a work in progress.*
+
 **sentential** can help you:
 
 + Generate truth tables
@@ -26,6 +28,23 @@ An interpreter for sentential logic (propositional calculus) written in Python.
 +-------+-----------+
 
 
+.. code-block:: python
+    # Propositions can be combined with standard string operators
+    law_of_non_contradiction = Proposition('''¬(p & ¬p)''')
+    law_of_excluded_middle = Proposition('''(p v ¬p)''')
+
+    the_nature_of_bivalence = Proposition('{} <-> {}'.format(law_of_non_contradiction.expr, law_of_excluded_middle.expr))
+
+    the_nature_of_bivalence.pretty_truth_table()
+
+
++-------+------------------------+
+| p     | ¬(p & ¬p) <-> (p v ¬p) |
++-------+------------------------+
+| True  | True                   |
++-------+------------------------+
+| False | True                   |
++-------+------------------------+
 
 .. code-block:: python
 
@@ -44,20 +63,30 @@ An interpreter for sentential logic (propositional calculus) written in Python.
     law_of_non_contradiction.is_theorem()
     True
 
-    # Propositions can be combined with standard string operators
-    law_of_non_contradiction = Proposition('''¬(p & ¬p)''')
-    law_of_excluded_middle = Proposition('''(p v ¬p)''')
+    negated_lnc = Proposition('''¬(¬(p & ¬p))''')
 
-    the_nature_of_bivalence = Proposition('{} <-> {}'.format(law_of_non_contradiction.expr, law_of_excluded_middle.expr))
+    negated_lnc.is_contradiction()
+    True
 
-    the_nature_of_bivalence.pretty_truth_table()
+**sentential** can also help you find proofs (by resolution).
 
+.. code-block:: python
+    
+    from sentential import Proposition
+    from sentential.KnowledgeBase import KnowledgeBase
 
-+-------+------------------------+
-| p     | ¬(p & ¬p) <-> (p v ¬p) |
-+-------+------------------------+
-| True  | True                   |
-+-------+------------------------+
-| False | True                   |
-+-------+------------------------+
+    kb = KnowledgeBase()
 
+    # Let's verify that we can run a proof using `hypothetical syllogism <https://en.wikipedia.org/wiki/Hypothetical_syllogism>`:
+    kb.add_axiom(Proposition('''a -> b'''))
+    kb.add_axiom(Proposition('''b -> c'''))
+    kb.add_axiom(Proposition('''c -> d'''))
+
+    # Let's say we know it's the case that "a"
+    kb.add_axiom(Proposition('''a'''))
+
+    # Can we prove that "d" is true given what we know above?
+    kb.add_goal(Proposition('''d'''))
+
+    kb.prove()
+    True
