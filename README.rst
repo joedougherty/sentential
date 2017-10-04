@@ -16,14 +16,12 @@ An interpreter for sentential logic (propositional calculus) written in Python.
     law_of_non_contradiction = Proposition('''¬(p & ¬p)''')
     law_of_non_contradiction.pretty_truth_table()
 
-    ```
-    -------+-----------+
-    | p     | ¬(p & ¬p) |
-    +-------+-----------+
-    | True  | True      |
-    | False | True      |
-    +-------+-----------+
-    ```
+-------+-----------+
+| p     | ¬(p & ¬p) |
++-------+-----------+
+| True  | True      |
+| False | True      |
++-------+-----------+
         
 	# Inspect the internal representation
     law_of_non_contradiction.truth_table()
@@ -32,10 +30,10 @@ An interpreter for sentential logic (propositional calculus) written in Python.
      OrderedDict([('p', False), ('expr_truth_value', True)])]
 
 
-    * Determine if a proposition is a theorem/contradiction
++ Determine if a proposition is a theorem/contradiction
 
     law_of_non_contradiction.is_theorem()
-    True
+    >>> True
 
 	# Propositions can be combined with standard string operators
 	>>> law_of_non_contradiction = Proposition('''¬(p & ¬p)''')
