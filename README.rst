@@ -8,36 +8,6 @@ An interpreter for sentential logic (propositional calculus) written in Python.
 
 *A work in progress.*
 
-**sentential** was designed to allow you to express propositions using familiar symbols. 
-
-Most operations can be expressed with multiple symbols. You can use ``¬`` just as easily as ``!`` or ``~``. 
-
-
-+-----------------------------------------+
-| Symbol | Operation                      |
-+--------+--------------------------------+
-| ¬      | Not                            |
-+--------+--------------------------------+
-| ~      | Not                            |
-+--------+--------------------------------+
-| !      | Not                            |
-+--------+--------------------------------+
-| v      | Or                             |
-+--------+--------------------------------+
-| or     | Or                             |
-+--------+--------------------------------+
-| &      | And                            |
-+--------+--------------------------------+
-| and    | And                            |
-+--------+--------------------------------+
-| ->     | if-then (conditional)          |
-+--------+--------------------------------+
-| iff    | if and only if (biconditional) |
-+--------+--------------------------------+
-| <->    | if and only if (biconditional) |
-+--------+--------------------------------+
-| =      | if any only if (biconditional) |
-+--------+--------------------------------+
 
 
 **sentential** can help you:
@@ -139,3 +109,63 @@ Proofs can be inspected further...
 
 
 .. image:: assets/generated_proof.png
+
+
+SYNTAX
+======
+
+**sentential** was designed to allow you to express propositions using the familiar symbols of classical logic. 
+
+The parser strives to minimize the user's mental overhead in converting his or her logical expressions into statements readable by sentential. 
+
+Here are some examples of legal expressions one could use to instatiate a Proposition:
+
+.. code-block:: python
+    
+    """p"""
+    """p v q"""
+    """(p v q)"""
+    """¬((a -> s) iff (!w and r))"""
+    """!¬(q)""" 
+
+Double negation is supported. Different symbols that correspond to the same operation can be mixed and matched.
+
+Most operations can be expressed with multiple symbols. You can use ``¬`` just as easily as ``!`` or ``~``. 
+
++--------+--------------------------------+
+| Symbol | Operation                      |
++--------+--------------------------------+
+| ¬      | Not                            |
++--------+--------------------------------+
+| ~      | Not                            |
++--------+--------------------------------+
+| !      | Not                            |
++--------+--------------------------------+
+| v      | Or                             |
++--------+--------------------------------+
+| or     | Or                             |
++--------+--------------------------------+
+| &      | And                            |
++--------+--------------------------------+
+| and    | And                            |
++--------+--------------------------------+
+| ->     | if-then (conditional)          |
++--------+--------------------------------+
+| iff    | if and only if (biconditional) |
++--------+--------------------------------+
+| <->    | if and only if (biconditional) |
++--------+--------------------------------+
+| =      | if any only if (biconditional) |
++--------+--------------------------------+
+
+It is important to bear in mind that all sub-expressions may contain *at most* two terms and one binary operator.
+
+Example:
+
+.. code-block:: python
+
+    '''(p v q)'''       # Two terms: ("p","q")          | One binary operator: "v"  | OK!
+    '''p'''             # One term: "p"                 | 0 binary operators        | OK!
+    '''(p & q & r)'''   # Three terms: ("p","q","r")    | Two binary operators      | Exception!
+
+While it may occasionally be inconvenient to nest expressions with shared operators, this provides unambiguous grouping rules. What you lose in convenience, you gain in semantic precision.
