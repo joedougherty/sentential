@@ -17,6 +17,7 @@ An interpreter for sentential logic (propositional calculus) written in Python.
     law_of_non_contradiction.pretty_truth_table()
     
 
+
     +-------+-----------+
     | p     | ¬(p & ¬p) |
     +-------+-----------+
@@ -26,11 +27,13 @@ An interpreter for sentential logic (propositional calculus) written in Python.
     +-------+-----------+
 
 
+
 .. code-block:: python
 
-	# Inspect the internal representation
+    # Inspect the internal representation
     law_of_non_contradiction.truth_table()
-    
+
+    # Results in:
     [OrderedDict([('p', True), ('expr_truth_value', True)]),
      OrderedDict([('p', False), ('expr_truth_value', True)])]
 
