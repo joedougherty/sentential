@@ -124,9 +124,6 @@ Proofs can be inspected further...
 .. image:: assets/generated_proof.png
 
 
-+ 
-
-
 SYNTAX
 ======
 
