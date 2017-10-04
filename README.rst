@@ -8,6 +8,38 @@ An interpreter for sentential logic (propositional calculus) written in Python.
 
 *A work in progress.*
 
+**sentential** was designed to allow you to express propositions using familiar symbols. 
+
+Most operations can be expressed with multiple symbols. You can use ``¬`` just as easily as ``!`` or ``~``. 
+
+
++-----------------------------------------+
+| Symbol | Operation                      |
++--------+--------------------------------+
+| ¬      | Not                            |
++--------+--------------------------------+
+| ~      | Not                            |
++--------+--------------------------------+
+| !      | Not                            |
++--------+--------------------------------+
+| v      | Or                             |
++--------+--------------------------------+
+| or     | Or                             |
++--------+--------------------------------+
+| &      | And                            |
++--------+--------------------------------+
+| and    | And                            |
++--------+--------------------------------+
+| ->     | if-then (conditional)          |
++--------+--------------------------------+
+| iff    | if and only if (biconditional) |
++--------+--------------------------------+
+| <->    | if and only if (biconditional) |
++--------+--------------------------------+
+| =      | if any only if (biconditional) |
++--------+--------------------------------+
+
+
 **sentential** can help you:
 
 + Generate truth tables
