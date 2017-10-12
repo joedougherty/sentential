@@ -141,9 +141,7 @@ Here are some examples of legal expressions one could use to instatiate a Propos
     """¬((a -> s) iff (!w and r))"""
     """!¬(q)""" 
 
-Double negation is supported. Different symbols that correspond to the same operation can be mixed and matched.
-
-Most operations can be expressed with multiple symbols. You can use ``¬`` just as easily as ``!`` or ``~``. 
+Double negation is supported. Most operations can be expressed with multiple symbols. You can use ``¬`` just as easily as ``!`` or ``~``. Mix and match as you please.
 
 +--------+--------------------------------+
 | Symbol | Operation                      |
@@ -173,15 +171,26 @@ Most operations can be expressed with multiple symbols. You can use ``¬`` just 
 
 It is important to bear in mind that all sub-expressions may contain *at most* two terms and one binary operator.
 
-Example:
+Examples:
 
 .. code-block:: python
 
     '''(p v q)'''       # Two terms: ("p","q")          | One binary operator: "v"  | OK!
-    '''p'''             # One term: "p"                 | 0 binary operators        | OK!
-    '''(p & q & r)'''   # Three terms: ("p","q","r")    | Two binary operators      | Exception!
+    '''p'''             # One term: "p"                 | Zero binary operators     | OK!
+    '''(p & q & r)'''   # Three terms: ("p","q","r")    | Two binary operators      | ERROR!!!
 
 While it may occasionally be inconvenient to nest expressions with shared operators, this provides unambiguous grouping rules. What you lose in convenience, you gain in semantic precision.
 
-The last example can be legally expressed in this way: ``Proposition('''((p & q) & r)''')``
+The last example can be expressed: ``Proposition('''((p & q) & r)''')`` or ``Proposition('''(p & (q & r))''')``
+
+You can even use **sentential** to verify these expressions are equivalent:
+
+.. code-block:: python
+
+    p1 = Proposition('''((p & q) & r)''')
+    p2 = Proposition('''(p & (q & r))''')
+
+    prop = Proposition('{} = {}'.format(p1, p2))
+
+    prop.is_theorem() # True
 
