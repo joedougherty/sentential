@@ -175,8 +175,8 @@ Examples:
 
 .. code-block:: python
 
-    '''(p v q)'''       # Two terms: ("p","q")          | One binary operator: "v"  | OK!
-    '''p'''             # One term: "p"                 | Zero binary operators     | OK!
+    '''(p v q)'''       # Two terms:   ("p","q")        | One binary operator: "v"  | OK!
+    '''p'''             # One term:    ("p")            | Zero binary operators     | OK!
     '''(p & q & r)'''   # Three terms: ("p","q","r")    | Two binary operators      | ERROR!!!
 
 While it may occasionally be inconvenient to nest expressions with shared operators, this provides unambiguous grouping rules. What you lose in convenience, you gain in semantic precision.
