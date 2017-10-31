@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 try:
     from string import lowercase
 except:
