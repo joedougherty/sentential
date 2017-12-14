@@ -17,21 +17,6 @@ Set of Support:
 	start with just the negated theorem in the SOS and keep adding in those clauses 
 	which are generated from the resolution of anything with an SOS member."
 
-	SOS Condition:
-	=============
-	if clause.is_negated_goal or clause.derived_from_negated_goal or clause.sos
-
-	Set .sos property at resolution time:
-	====================================
-		clause1_in_sos = clause1.is_negated_goal or clause1.derived_from_negated_goal or clause1.sos
-		clause2_in_sos = clause2.is_negated_goal or clause2.derived_from_negated_goal or clause2.sos
-		new_clause_derived_from_negated_goal = clause1.is_negated_goal or clause2.is_negated_goal
-
-		combined_clause = Clause(clause, 
-							sos=clause1_in_sos or clause2_in_sos,
-							derived_from_negated_clause=new_clause_derived_from_negated_goal,
-							...)
-
 Set of Support v. Linear Input:
 	https://math.stackexchange.com/questions/1627473/propositional-logic-resolution-strategies
 
@@ -43,3 +28,6 @@ Resolution overview (in the first-order case):
 
 Logic workbook:
 	http://www.kpaprzycka.filozofia.uw.edu.pl/Publ/xLogicSelfTaught.html
+
+Worked Proofs:
+	https://www.cs.rochester.edu/~nelson/courses/csc_173/proplogic/resolution.html
