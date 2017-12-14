@@ -9,21 +9,6 @@
 * Either interest rates do not increase or the government does not borrow more money.
 
 Prove either the debt ceiling isn't raised or expenditures don't rise.
-
-   1. T OR NOT E OR D              Premise
-  
-   2. NOT T OR C                   Premise
-  
-   3. (E AND NOT G) OR NOT D OR I  Premise
-  
-   4. T OR C OR NOT D OR G         Premise
-  
-   5. NOT C                        Premise
-  
-   6. NOT I OR NOT G               Premise
-  
-   7. D AND E                      Negation of conclusion
-
 """
 
 from sentential import Proposition
@@ -43,4 +28,15 @@ kb.add_axiom(Proposition('''~i v ~g''', desc="Either interest rates do not incre
 
 kb.add_goal(Proposition('''~d v ~e''', desc="The debt ceiling isn't raised or expenditures don't rise."))
 
+# We have successfully found a proof that "The debt ceiling isn't raised or expenditures don't rise."
 assert kb.prove() == True
+
+# You can also visualize the proof construction!
+proof = kb.prove(return_proof=True)
+proof.find()
+
+from pprint import pprint
+pprint(proof.steps)
+
+# Uncomment this if you have graphziv installed 
+#proof.visualize()
