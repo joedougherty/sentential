@@ -4,13 +4,14 @@ import pytest
 
 from sentential.dpll import *
 
+
 # Top level API sanity checks
 def test_empty_collection_evaluates_to_true():
     assert dpll([]) == True
 
 
 def test_single_empty_clause_evaluates_to_false():
-    assert dpll([[]]] == False
+    assert dpll([[]]) == False
 
 
 # "Simplify" test cases

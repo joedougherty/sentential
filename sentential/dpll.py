@@ -71,5 +71,6 @@ def pop_negatives(clause, negated_literal):
 
 def simplify(clause_collection, literal):
     positive, negated = literal, '~{}'.format(literal)
-    sans_positives = [c for c in cc if positive not in c]
+
+    sans_positives = [c for c in clause_collection if positive not in c]
     return [pop_negatives(c, negated) for c in sans_positives]
