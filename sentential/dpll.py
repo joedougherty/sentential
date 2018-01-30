@@ -3,19 +3,16 @@
 from collections import namedtuple
 from copy import copy, deepcopy
 
-from .ProofGraph import ProofGraph
-from .rewrite_rules import clause_is_tautology
-
             
 #####################################################################    
 # ASSUMPTION:                                                       #
 #                                                                   #
 #   Each clause collection (as cc) has the following properties:    #
 #                                                                   #
-#       + cc.as_lists: representation of CNF as lists               #
+#       + cc.as_list: representation of CNF as list of sets         #
 #           (ex: [['p', '~q'], ['~p', '~q', 'r']])                  #
 #                                                                   #
-#       + cc.variables: tuple of "positivized" literals             #
+#       + cc.variables: list of "positivized" literals              #
 #          (ex: ('p', 'q, 'r'))                                     #
 #                                                                   #
 #####################################################################
@@ -68,17 +65,11 @@ def dpll(clause_collection):
     return dpll(simplify(clause_collection, negated))
 
 
+def pop_negatives(clause, negated_literal):
+    return [l for l in clause if l != negated_literal]
+
+
 def simplify(clause_collection, literal):
-    if is_negated(literal):
-        positive, negative = literal[0], literal
-    else:
-        positive, negative = literal, '~{}'.format(literal)
-
-    for idx, clause in enumerate(clause_collection):
-        if positive in clause:
-            del clause_collection[idx]
-
-        if negative in clause:
-            del clause[clause.index(negative)]
-
-    return clause_collection
+    positive, negated = literal, '~{}'.format(literal)
+    sans_positives = [c for c in cc if positive not in c]
+    return [pop_negatives(c, negated) for c in sans_positives]
