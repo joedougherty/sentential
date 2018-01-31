@@ -8,8 +8,6 @@ except:
 from copy import deepcopy
 from operator import not_
 
-from .Proposition import Proposition
-
 """
 Provides models and tools for converting a nested list AST
 into a tree model (given by Expression) and vice versa.
@@ -117,9 +115,7 @@ def ast_is_a_term(ast):
 
 def expressify(proposition):
     prop = deepcopy(proposition)
-    if isinstance(prop, Proposition):
-        return _treeify(prop.raw_ast)
-    return _treeify(prop)
+    return _treeify(prop.raw_ast)
 
 
 def _treeify(ast, next_negation=None, previous_level_was_negated=False):

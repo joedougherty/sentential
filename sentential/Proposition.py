@@ -2,8 +2,10 @@
 
 from prettytable import PrettyTable
 
+from .Expression import expressify
 from .grammar import expression_is_grammatical
 from .parser import tokenize, balanced_parens, read_from_tokens_gen
+from .rewrite_rules import group_cnf, cnf
 from .sentential import derive_truth_value, generate_all_possible_truth_vals
 from .subexpression import ast_is_sane
 from .utils import parenthesize, extract_variables
@@ -80,6 +82,9 @@ class Proposition:
         for row in self.truth_table(cond=cond):
             t.add_row([row.get(x) for x in self.expr_vars] + [row.get('expr_truth_value')])
         print(t)
+
+    def cnf(self):
+        return group_cnf(cnf(expressify(self)))
 
     def _double_negation_elimination(self, found_terms):
         return [t.replace('~~','') for t in found_terms]

@@ -5,7 +5,7 @@ except ImportError:
 
 setup(
         name='sentential',
-        version='0.1.0',
+        version='0.1.1',
         description="A sentential logic interpreter/evaluator.",
         author_email='joseph.dougherty@gmail.com',
         packages=['sentential'],
