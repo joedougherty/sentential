@@ -76,12 +76,11 @@ An interpreter for sentential logic (propositional calculus) written in Python.
 .. code-block:: python
     
     from sentential import Proposition
-    from sentential.Expression import expressify
-    from sentential.rewrite_rules import group_cnf, cnf
 
-    group_cnf(cnf(expressify(Proposition('''((p and w) -> !e)''')))) # [{'~e', '~p', '~w'}]
+    prop = Proposition('''((p and w) -> !e)''')
 
-**Note**: This API will be improved in future versions.
+    prop.cnf() # [{'~e', '~p', '~w'}]
+
 
 **sentential** can also help you find proofs (by resolution).
 
